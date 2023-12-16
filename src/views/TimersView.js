@@ -1,5 +1,5 @@
 import React from "react";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 
 import Stopwatch from "../components/timers/Stopwatch";
@@ -31,6 +31,11 @@ const TimerTitle = styled.div``;
 
 const TimersView = () => {
   const { timers, deleteTimer, handleTimerStart, handleWorkoutReset, handlePauseResume, handleFastForward} = useContext(TimersContext);
+  const [ workoutSteps, setWorkoutSteps ] = useState(() => { 
+    const hash = (window.location.hash ?? '').slice(1);
+    return decodeURIComponent(hash);
+  });
+  
   let totalTime = 0;
   const timersDisplay = []
   for (let i=0; i<timers.length; i++){
@@ -52,6 +57,31 @@ const TimersView = () => {
 
   }
 
+  useEffect(() => {
+    setWorkoutSteps(() => {
+      let steps = '';
+    
+        for (let i=0; i<timers.length; i++) {
+          let time = CalculateTotalSeconds(timers[i].startMinutes, timers[i].startSeconds);
+          steps += timers[i].selectedTimer + 'Time' + time;
+          if (timers[i].rounds) {
+            workoutSteps += 'Rounds' + timers[i].rounds;
+          }
+          if (timers[i].startRestMinutes || timers[i].startRestSeconds) {
+            let restTime = CalculateTotalSeconds(timers[i].startRestMinutes, timers[i].startRestSeconds);
+            steps += 'Rest' + restTime;
+          }
+        }
+        
+    return steps;
+  });
+  window.location.hash = encodeURIComponent(workoutSteps);
+
+}, [timers]);
+  
+
+
+
 
   return (
 
@@ -67,7 +97,6 @@ const TimersView = () => {
         {timersDisplay.map((timer) => (
           <div key={timer.index}>
             <Timer >
-              <TimerTitle>{timer.title}</TimerTitle>
               {timer.C}
             </Timer>
             <Button value="Delete Timer" onClick={() => {

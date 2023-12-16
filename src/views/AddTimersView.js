@@ -3,6 +3,7 @@ import { useContext, useState } from 'react';
 
 import Button from "../components/generic/Button";
 import TimerInput from "../components/generic/TimerInput";
+import TimersView from "../views/TimersView";
 
 import { TimersContext } from "../utils/TimersProvider";
 
@@ -175,17 +176,52 @@ const Editor = () => {
 
 
 const AddTimersView = () => {
-    const { openEditor, editorOpen } = useContext(TimersContext);
+    const { timers, openEditor, editorOpen, deleteTimer } = useContext(TimersContext);
   
 	return (
+        <div>
+            <span>
+                <Button value="Add New Timer" color="#aaa0ff" onClick={() => openEditor()} />
 
-        <span>
-            <Button value="Add New Timer" color="#aaa0ff" onClick={() => openEditor()} />
+                {editorOpen && <Editor />}
+            </span>
 
-            {editorOpen && <Editor />}
-        </span>
+
+    {/* <Timers>
+        {timersDisplay.map((timer) => (
+          <div key={timer.index}>
+            <Timer >
+              <TimerTitle>{timer.title}</TimerTitle>
+              {timer.C}
+            </Timer>
+            <Button value="Delete Timer" onClick={() => {
+                    deleteTimer({ id: timer.id });
+                  }} />
+                 
+                  
+          </div>
+        ))}
+      </Timers> */}
+      <h3>Workout Schedule</h3>
+      {timers.map((timer) => (
+        <div>
+            {timer.selectedTimer}
+        
+            <Button value="Delete Timer" onClick={() => {
+                deleteTimer({ id: timer.id });
+            }} />
+
+            {/* <Button value="Add New Timer" color="#aaa0ff" onClick={() => openEditor()} /> */}
+
+
+        </div>
+      
+      ))}
+
+
+    </div>
 		);
-
+                
 };
 
 export default AddTimersView;
