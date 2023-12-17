@@ -30,7 +30,7 @@ const Timer = styled.div`
 const TimerTitle = styled.div``;
 
 const TimersView = () => {
-  const { timers, deleteTimer, handleTimerStart, handleWorkoutReset, handlePauseResume, handleFastForward} = useContext(TimersContext);
+  const { timers, saveTimer, deleteTimer, handleTimerStart, handleWorkoutReset, handlePauseResume, handleFastForward} = useContext(TimersContext);
   const [ workoutSteps, setWorkoutSteps ] = useState(() => { 
     const hash = (window.location.hash ?? '').slice(1);
     return decodeURIComponent(hash);
@@ -71,11 +71,48 @@ const TimersView = () => {
       // window.location.hash = encodeURIComponent(workoutSteps);
       window.location.hash = encodeURIComponent(initialSteps);
 
-
   }, []);
 
-  if (timers. length > 0) {
+  console.log(`timers.length ${timers.length}`);
+  if (timers.length > 0) {
     window.location.hash = encodeURIComponent(initialSteps);
+  }
+
+  else {
+    const hash = (window.location.hash ?? '').slice(1);
+    // let timer = hash.split('Timer');
+    // console.log(timer);
+    // let time = hash.split('Work');
+    // console.log(time);
+    // const one = hash.substring(hash.split('Timer'), hash.split('Work'));
+    // console.log(one);
+    let hashTimers = hash.split('-');
+    // console.log(hashTimers);
+    for (let i=0; i<hashTimers.length; i++){
+      if (hashTimers[i] === 'Stopwatch'){
+        let selectedTimer = 'Stopwatch';
+        let runTime = parseInt(hashTimers[i+1]);
+        let startMinutes = CalculateMinutesSeconds(parseInt(hashTimers[i+1]))[0];
+        let startSeconds = CalculateMinutesSeconds(parseInt(hashTimers[i+1]))[1];
+        console.log(`runTime ${runTime}`);
+        console.log(`startMinutes ${startMinutes}`);
+        console.log(`startSeconds ${startSeconds}`);
+        saveTimer({
+          id: selectedTimer?.id,
+          index: (timers.length === 0) ? 0 : timers.length,
+          selectedTimer,
+          startMinutes,
+          startSeconds,
+          isRunning: 'not running',
+          // rounds,
+          // startRestMinutes,
+          // startRestSeconds,
+          
+      });
+        
+      }
+    }
+    // console.log(timers);
   }
 
   useEffect(() => {

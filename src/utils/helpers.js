@@ -56,15 +56,19 @@ export const makeId = () => {
     let steps = '';
     for (let i=0; i<timers.length; i++) {
       let time = CalculateTotalSeconds(timers[i].startMinutes, timers[i].startSeconds);
-      steps += timers[i].selectedTimer + 'Time' + time;
-      if (timers[i].rounds) {
-        steps += 'Rounds' + timers[i].rounds;
-      }
-      if (timers[i].startRestMinutes || timers[i].startRestSeconds) {
+    //   steps += 'Timer' + timers[i].selectedTimer + 'Work' + time;
+      steps += '-' + timers[i].selectedTimer + '-' + time;
+    //   if (timers[i].rounds) {
+        // steps += 'Rounds' + timers[i].rounds;
+        steps += '-' + timers[i].rounds;
+    //   }
+    //   if (timers[i].startRestMinutes || timers[i].startRestSeconds) {
         let restTime = CalculateTotalSeconds(timers[i].startRestMinutes, timers[i].startRestSeconds);
-        steps += 'Rest' + restTime;
-      }
+        // steps += 'Rest' + restTime;
+        steps += '-' + restTime;
+    //   }
     }
+    steps += '-';
     return steps;
 
   });
