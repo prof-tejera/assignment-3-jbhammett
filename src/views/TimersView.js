@@ -70,12 +70,13 @@ const TimersView = () => {
   //     });
       // window.location.hash = encodeURIComponent(workoutSteps);
       window.location.hash = encodeURIComponent(initialSteps);
-  //   }
+
 
   }, []);
 
-
-  window.location.hash = encodeURIComponent(initialSteps);
+  if (timers. length > 0) {
+    window.location.hash = encodeURIComponent(initialSteps);
+  }
 
   useEffect(() => {
     setWorkoutSteps(() => {
