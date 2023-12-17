@@ -52,3 +52,21 @@ export const makeId = () => {
   };
 
 
+  export const CreateHash = ((timers) => {
+    let steps = '';
+    for (let i=0; i<timers.length; i++) {
+      let time = CalculateTotalSeconds(timers[i].startMinutes, timers[i].startSeconds);
+      steps += timers[i].selectedTimer + 'Time' + time;
+      if (timers[i].rounds) {
+        steps += 'Rounds' + timers[i].rounds;
+      }
+      if (timers[i].startRestMinutes || timers[i].startRestSeconds) {
+        let restTime = CalculateTotalSeconds(timers[i].startRestMinutes, timers[i].startRestSeconds);
+        steps += 'Rest' + restTime;
+      }
+    }
+    return steps;
+
+  });
+
+

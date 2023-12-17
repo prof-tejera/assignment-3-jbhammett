@@ -11,7 +11,7 @@ import Button from "../components/generic/Button";
 import DisplayTime from "../components/generic/DisplayTime";
 
 import { TimersContext } from "../utils/TimersProvider";
-import { CalculateTotalSeconds, CalculateMinutesSeconds } from "../utils/helpers";
+import { CalculateTotalSeconds, CalculateMinutesSeconds, CreateHash } from "../utils/helpers";
 
 
 const Timers = styled.div`
@@ -35,6 +35,7 @@ const TimersView = () => {
     const hash = (window.location.hash ?? '').slice(1);
     return decodeURIComponent(hash);
   });
+
   
   let totalTime = 0;
   const timersDisplay = []
@@ -57,29 +58,34 @@ const TimersView = () => {
 
   }
 
+
+
+  let initialSteps = CreateHash(timers);
+
+  useEffect (() => { 
+  //   if (timers.length > 0) {
+  //     setWorkoutSteps(() => {
+  //       let initialSteps = createHash(timers);
+  //       return initialSteps;
+  //     });
+      // window.location.hash = encodeURIComponent(workoutSteps);
+      window.location.hash = encodeURIComponent(initialSteps);
+  //   }
+
+  }, []);
+
+
+  window.location.hash = encodeURIComponent(initialSteps);
+
   useEffect(() => {
     setWorkoutSteps(() => {
-      let steps = '';
-    
-        for (let i=0; i<timers.length; i++) {
-          let time = CalculateTotalSeconds(timers[i].startMinutes, timers[i].startSeconds);
-          steps += timers[i].selectedTimer + 'Time' + time;
-          if (timers[i].rounds) {
-            workoutSteps += 'Rounds' + timers[i].rounds;
-          }
-          if (timers[i].startRestMinutes || timers[i].startRestSeconds) {
-            let restTime = CalculateTotalSeconds(timers[i].startRestMinutes, timers[i].startRestSeconds);
-            steps += 'Rest' + restTime;
-          }
-        }
+      let steps = CreateHash(timers);
         
     return steps;
   });
   window.location.hash = encodeURIComponent(workoutSteps);
 
 }, [timers]);
-  
-
 
 
 
