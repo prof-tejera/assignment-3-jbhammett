@@ -60,60 +60,73 @@ const TimersView = () => {
 
 
 
-  let initialSteps = CreateHash(timers);
+  // let initialSteps = CreateHash(timers);
 
   useEffect (() => { 
-  //   if (timers.length > 0) {
-  //     setWorkoutSteps(() => {
-  //       let initialSteps = createHash(timers);
-  //       return initialSteps;
-  //     });
-      // window.location.hash = encodeURIComponent(workoutSteps);
-      window.location.hash = encodeURIComponent(initialSteps);
+    if (timers.length > 0) {
+      setWorkoutSteps(() => {
+        let initialSteps = CreateHash(timers);
+        // window.location.hash = encodeURIComponent(workoutSteps);
+        return initialSteps;
 
-  }, []);
-
-  console.log(`timers.length ${timers.length}`);
-  if (timers.length > 0) {
-    window.location.hash = encodeURIComponent(initialSteps);
-  }
-
-  else {
-    const hash = (window.location.hash ?? '').slice(1);
-    // let timer = hash.split('Timer');
-    // console.log(timer);
-    // let time = hash.split('Work');
-    // console.log(time);
-    // const one = hash.substring(hash.split('Timer'), hash.split('Work'));
-    // console.log(one);
-    let hashTimers = hash.split('-');
-    // console.log(hashTimers);
-    for (let i=0; i<hashTimers.length; i++){
-      if (hashTimers[i] === 'Stopwatch'){
-        let selectedTimer = 'Stopwatch';
-        let runTime = parseInt(hashTimers[i+1]);
-        let startMinutes = CalculateMinutesSeconds(parseInt(hashTimers[i+1]))[0];
-        let startSeconds = CalculateMinutesSeconds(parseInt(hashTimers[i+1]))[1];
-        console.log(`runTime ${runTime}`);
-        console.log(`startMinutes ${startMinutes}`);
-        console.log(`startSeconds ${startSeconds}`);
-        saveTimer({
-          id: selectedTimer?.id,
-          index: (timers.length === 0) ? 0 : timers.length,
-          selectedTimer,
-          startMinutes,
-          startSeconds,
-          isRunning: 'not running',
-          // rounds,
-          // startRestMinutes,
-          // startRestSeconds,
-          
       });
-        
+      window.location.hash = encodeURIComponent(workoutSteps);
+      // window.location.hash = encodeURIComponent(initialSteps);
+
+    }
+
+
+    else {
+      const hash = (window.location.hash ?? '').slice(1);
+      let hashTimers = hash.split('-');
+      console.log(`hashTimers ${hashTimers}`);
+      const timerTypes = ['Stopwatch', 'Countdown', 'XY', 'Tabata'];
+      for (let i=0; i<hashTimers.length; i++){
+        if (timerTypes.includes(hashTimers[i])){
+          // if (hashTimers[i] === 'Stopwatch') {
+          console.log(`${hashTimers[i]} included`);
+          // let selectedTimer = 'Stopwatch';
+          let selectedTimer = hashTimers[i];
+          let startMinutes = CalculateMinutesSeconds(parseInt(hashTimers[i+1]))[0];
+          let startSeconds = CalculateMinutesSeconds(parseInt(hashTimers[i+1]))[1];
+          // console.log(`hashTimers[i] ${hashTimers[i]}`);
+          let rounds = '';
+          let startRestMinutes = '';
+          let startRestSeconds = '';
+          if (selectedTimer === 'XY' || selectedTimer === 'Tabata') {
+            rounds = hashTimers[i+2];
+          }
+  
+          if (selectedTimer === 'Tabata') {
+            startRestMinutes = CalculateMinutesSeconds(parseInt(hashTimers[i+3]))[0];
+            startRestSeconds = CalculateMinutesSeconds(parseInt(hashTimers[i+3]))[1];
+          }
+  
+          saveTimer({
+            id: selectedTimer?.id,
+            index: (timers.length === 0) ? 0 : timers.length,
+            selectedTimer,
+            startMinutes,
+            startSeconds,
+            isRunning: 'not running',
+            rounds,
+            startRestMinutes,
+            startRestSeconds,
+            
+          });
+          
+        }
+        console.log(`hashTimers 2 ${hashTimers}`);
       }
     }
-    // console.log(timers);
-  }
+  
+
+ 
+
+
+
+    
+  }, []);
 
   useEffect(() => {
     setWorkoutSteps(() => {
@@ -125,6 +138,12 @@ const TimersView = () => {
 
 }, [timers]);
 
+
+  console.log(`timers.length ${timers.length}`);
+  // if (timers.length > 0) {
+  //   // window.location.hash = encodeURIComponent(initialSteps);
+  //   window.location.hash = encodeURIComponent(workoutSteps);
+  // }
 
 
   return (

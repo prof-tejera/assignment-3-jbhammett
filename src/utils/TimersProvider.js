@@ -100,7 +100,7 @@ const TimersProvider = ({ children }) => {
                         isRunning,
                         reset,
                     };
-
+                    console.log(`${selectedTimer} saved`);
                     if (id) {
                         const updatedTimers = timers.map(t => (t.id === id ? updatedTimer : t ));
                         setTimers(updatedTimers);
