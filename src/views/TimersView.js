@@ -138,12 +138,10 @@ const TimersView = () => {
 
 }, [timers]);
 
-
-  console.log(`timers.length ${timers.length}`);
-  // if (timers.length > 0) {
-  //   // window.location.hash = encodeURIComponent(initialSteps);
-  //   window.location.hash = encodeURIComponent(workoutSteps);
-  // }
+  if (timers.length > 0) {
+    // window.location.hash = encodeURIComponent(initialSteps);
+    window.location.hash = encodeURIComponent(workoutSteps);
+  }
 
 
   return (

@@ -53,7 +53,6 @@ export const makeId = () => {
 
 
   export const CreateHash = ((timers) => {
-    console.log(`CreateHash timers.length ${timers.length}`);
     let steps = '';
     for (let i=0; i<timers.length; i++) {
       let time = CalculateTotalSeconds(timers[i].startMinutes, timers[i].startSeconds);
