@@ -40,19 +40,133 @@ const TimersView = () => {
   //   return decodeURIComponent(hash);
   // });
 
+  useEffect (() => {
+  if (timers.length > 0){
+    setHash(()=>{
+      return CreateHash(timers);
+    });
+  }
 
+  else {
+
+    // if (timers.length === 0) {
+
+    let hashTimers = hash.split('-');
+    //     console.log(`hashTimers ${hashTimers}`);
+    const timerTypes = ['Stopwatch', 'Countdown', 'XY', 'Tabata'];
+    for (let i=0; i<=hashTimers.length; i++){
+      if (timerTypes.includes(hashTimers[i])){
+        let selectedTimer = hashTimers[i];
+        let startMinutes = CalculateMinutesSeconds(parseInt(hashTimers[i+1]))[0];
+        let startSeconds = CalculateMinutesSeconds(parseInt(hashTimers[i+1]))[1];
+
+        let rounds = '';
+        let startRestMinutes = '';
+        let startRestSeconds = '';
+        if (selectedTimer === 'XY' || selectedTimer === 'Tabata') {
+          rounds = hashTimers[i+2];
+        }
+
+        if (selectedTimer === 'Tabata') {
+          startRestMinutes = CalculateMinutesSeconds(parseInt(hashTimers[i+3]))[0];
+          startRestSeconds = CalculateMinutesSeconds(parseInt(hashTimers[i+3]))[1];
+        }
+
+        saveTimer({
+          id: selectedTimer?.id,
+          index: (timers.length === 0) ? 0 : timers.length,
+          selectedTimer,
+          startMinutes,
+          startSeconds,
+          isRunning: 'not running',
+          rounds,
+          startRestMinutes,
+          startRestSeconds,
+          description: 'test',    
+          
+        });
+        
+      }
+      console.log(`hashTimers ${hashTimers}`);
+      console.log(`timers ${timers}`);
+
+    }
+
+
+    }
+
+
+  
+
+  }, []);
+
+ 
+    
+
+ 
+
+
+  console.log(`hash ${hash}`);
   window.location.hash = encodeURIComponent(hash);
 
-  useEffect (() => {
+  // if (timers.length === 0) {
 
-    setHash (() => {
-      let initialHash = CreateHash(timers);
-      return initialHash;
-    });
+  //   let hashTimers = hash.split('-');
+  //   //     console.log(`hashTimers ${hashTimers}`);
+  //   const timerTypes = ['Stopwatch', 'Countdown', 'XY', 'Tabata'];
+  //   for (let i=0; i<hashTimers.length; i++){
+  //     if (timerTypes.includes(hashTimers[i])){
+  //       let selectedTimer = hashTimers[i];
+  //       let startMinutes = CalculateMinutesSeconds(parseInt(hashTimers[i+1]))[0];
+  //       let startSeconds = CalculateMinutesSeconds(parseInt(hashTimers[i+1]))[1];
 
-    console.log(timers);
+  //       let rounds = '';
+  //       let startRestMinutes = '';
+  //       let startRestSeconds = '';
+  //       if (selectedTimer === 'XY' || selectedTimer === 'Tabata') {
+  //         rounds = hashTimers[i+2];
+  //       }
 
-   }, []);
+  //       if (selectedTimer === 'Tabata') {
+  //         startRestMinutes = CalculateMinutesSeconds(parseInt(hashTimers[i+3]))[0];
+  //         startRestSeconds = CalculateMinutesSeconds(parseInt(hashTimers[i+3]))[1];
+  //       }
+
+  //       saveTimer({
+  //         id: selectedTimer?.id,
+  //         index: (timers.length === 0) ? 0 : timers.length,
+  //         selectedTimer,
+  //         startMinutes,
+  //         startSeconds,
+  //         isRunning: 'not running',
+  //         rounds,
+  //         startRestMinutes,
+  //         startRestSeconds,
+          
+  //       });
+        
+  //     }
+  //     console.log(`hashTimers ${hashTimers}`);
+
+  //   }
+  // }
+    
+  
+
+
+
+  
+
+  // useEffect (() => {
+
+  //   setHash (() => {
+  //     let initialHash = CreateHash(timers);
+  //     return initialHash;
+  //   });
+
+  //   console.log(timers);
+
+  //  }, []);
 
   
 

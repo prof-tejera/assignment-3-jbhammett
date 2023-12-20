@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { makeId, CreateHash, CalculateTotalSeconds } from "../utils/helpers";
 
 export const TimersContext = React.createContext({});
@@ -13,15 +14,7 @@ const TimersProvider = ({ children }) => {
         const hash = (window.location.hash ?? '').slice(1);
         return decodeURIComponent(hash);
     });
-    // const [totalTime, setTotalTime] = useState(()=> {
-    //     let total = 0;
-    //     for (let i=0; i<timers.length; i++){
-    //         const time = CalculateTotalSeconds(timers[i].startMinutes, timers[i].startSeconds);
-    //         total = total + time;
-    //     }
-    //     console.log(`total ${total}`);
-    //     return total;
-    // })
+
     const [totalTime, setTotalTime] = useState(0);
 
     const totalSeconds = useRef(0);
@@ -42,8 +35,6 @@ const TimersProvider = ({ children }) => {
     for (let j=1; j < 20; j++){
         roundsOptions.push(j);
     }
-
-    // const hash = CreateHash(timers);
 
     return (
         <TimersContext.Provider
@@ -120,7 +111,7 @@ const TimersProvider = ({ children }) => {
                         isRunning,
                         description,
                     };
-                    console.log(`${selectedTimer} saved`);
+                    
                     if (id) {
                         const updatedTimers = timers.map(t => (t.id === id ? updatedTimer : t ));
                         setTimers(updatedTimers);

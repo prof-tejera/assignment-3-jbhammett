@@ -25,19 +25,7 @@ const Stopwatch = ({id, index, startMinutes, startSeconds, isRunning, descriptio
         isRunning = 'not running';
     }
 
-    // useEffect(() => {
-    //     if (isRunning === 'not running') {
-    //       clearInterval(secondsCountInterval.current);
-    //       setCounter(0);
-    //       setRunning(false);
-    //     }
-    //     else if (isRunning === 'paused'){
-    //       clearInterval(secondsCountInterval.current);
-    //       setRunning(false);
-    //     }
 
-        
-    // }, [isRunning, setRunning]);
 
     // Start timer
     useEffect(() => {
