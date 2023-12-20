@@ -1,5 +1,6 @@
 import React from "react";
 import { useContext, useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
 import styled from "styled-components";
 
 import Stopwatch from "../components/timers/Stopwatch";
@@ -11,6 +12,7 @@ import Button from "../components/generic/Button";
 import DisplayTime from "../components/generic/DisplayTime";
 
 import { TimersContext } from "../utils/TimersProvider";
+import { Editor } from "../views/AddTimersView";
 import { CalculateTotalSeconds, CalculateMinutesSeconds, CreateHash } from "../utils/helpers";
 
 
@@ -30,7 +32,7 @@ const Timer = styled.div`
 const TimerTitle = styled.div``;
 
 const TimersView = () => {
-  const { timers, totalTime, setTotalTime, hash, setHash, saveTimer, deleteTimer, handleTimerStart, handleWorkoutReset, handlePauseResume, handleFastForward} = useContext(TimersContext);
+  const { timers, editorOpen, openTimer, openEditor, totalTime, setTotalTime, hash, setHash, saveTimer, deleteTimer, handleTimerStart, handleWorkoutReset, handlePauseResume, handleFastForward} = useContext(TimersContext);
   // const [ workoutSteps, setWorkoutSteps ] = useState(() => { 
   //   const hash = (window.location.hash ?? '').slice(1);
   //   return decodeURIComponent(hash);
@@ -300,10 +302,16 @@ const TimersView = () => {
             <Timer >
               {timer.C}
             </Timer>
+
+            {/* <Button value="Edit Timer" color="#aaa0ff" onClick={() => openTimer({ index: timer.index })} />
+                {editorOpen && <Editor />} */}
+
             <Button value="Delete Timer" onClick={() => {
                     deleteTimer({ id: timer.id });
                   }} />
-                 
+            {/* <Link to={`/edit/${timerId}`}>
+                <Button value="Edit" />
+            </Link> */}
                   
           </div>
         ))}

@@ -56,6 +56,7 @@ const App = () => {
             <Route path="/docs" element={<DocumentationView />} />
             <Route path="/" element={<TimersView />} />
             <Route path="/add" element={<AddTimersView />} />
+            <Route path="/edit/:timerId" element={<AddTimersView />} />
           </Routes>
         </Router>
       </Container>

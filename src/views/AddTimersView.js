@@ -9,15 +9,16 @@ import TimersView from "../views/TimersView";
 import { TimersContext } from "../utils/TimersProvider";
 
 
-const Editor = () => {
-    const { timers, saveTimer, closeEditor, secondsOptions, minutesOptions, roundsOptions } = useContext(TimersContext);
-    const [selectedTimer, setSelectedTimer ] = useState(null);
-    const [startMinutes, setStartMinutes] = useState(selectedTimer?.startMinutes ?? '');
-    const [startSeconds, setStartSeconds] = useState(selectedTimer?.startSeconds ?? '');
-    const [rounds, setRounds] = useState(selectedTimer?.rounds ?? '');
-    const [startRestMinutes, setStartRestMinutes] = useState(selectedTimer?.restMinutes ?? '');
-    const [startRestSeconds, setStartRestSeconds] = useState(selectedTimer?.restSeconds ?? '');
-    const [description, setDescription] = useState(selectedTimer?.description ?? '');
+export const Editor = () => {
+    const { timers, editTimer, saveTimer, closeEditor, secondsOptions, minutesOptions, roundsOptions } = useContext(TimersContext);
+    // const [selectedTimer, setSelectedTimer ] = useState(null);
+    const [selectedTimer, setSelectedTimer ] = useState(editTimer?.selectedTimer ?? '');
+    const [startMinutes, setStartMinutes] = useState(editTimer?.startMinutes ?? '');
+    const [startSeconds, setStartSeconds] = useState(editTimer?.startSeconds ?? '');
+    const [rounds, setRounds] = useState(editTimer?.rounds ?? '');
+    const [startRestMinutes, setStartRestMinutes] = useState(editTimer?.restMinutes ?? '');
+    const [startRestSeconds, setStartRestSeconds] = useState(editTimer?.restSeconds ?? '');
+    const [description, setDescription] = useState(editTimer?.description ?? '');
     
     const handleAddTimerInput = (value) => {
         setSelectedTimer(value);
@@ -60,6 +61,7 @@ const Editor = () => {
     return (
         <div>
             <select onChange={e => handleAddTimerInput(e.target.value)}>
+            {/* <select value={editTimer.selectedTimer} onChange={e => handleAddTimerInput(e.target.value)}> */}
                 {listOptions}
             </select>
          
@@ -175,7 +177,8 @@ const Editor = () => {
                         color="#aaa0ff"
                         onClick={() => {
                             saveTimer({
-                                id: selectedTimer?.id,
+                                // id: selectedTimer?.id,
+                                id: editTimer?.id,
                                 index: (timers.length === 0) ? 0 : timers.length,
                                 selectedTimer,
                                 startMinutes,
