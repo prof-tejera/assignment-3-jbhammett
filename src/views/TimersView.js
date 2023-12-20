@@ -30,11 +30,29 @@ const Timer = styled.div`
 const TimerTitle = styled.div``;
 
 const TimersView = () => {
-  const { timers, saveTimer, deleteTimer, handleTimerStart, handleWorkoutReset, handlePauseResume, handleFastForward} = useContext(TimersContext);
-  const [ workoutSteps, setWorkoutSteps ] = useState(() => { 
-    const hash = (window.location.hash ?? '').slice(1);
-    return decodeURIComponent(hash);
-  });
+  const { timers, hash, setHash, saveTimer, deleteTimer, handleTimerStart, handleWorkoutReset, handlePauseResume, handleFastForward} = useContext(TimersContext);
+  // const [ workoutSteps, setWorkoutSteps ] = useState(() => { 
+  //   const hash = (window.location.hash ?? '').slice(1);
+  //   return decodeURIComponent(hash);
+  // });
+  // const [value, setValue] = useState(() => {
+  //   const hash = (window.location.hash ?? '').slice(1);
+  //   return decodeURIComponent(hash);
+  // });
+
+
+  window.location.hash = encodeURIComponent(hash);
+
+  useEffect (() => {
+
+    setHash (() => {
+      let initialHash = CreateHash(timers);
+      return initialHash;
+    });
+
+    console.log(timers);
+
+   }, []);
 
   
   let totalTime = 0;
@@ -59,89 +77,84 @@ const TimersView = () => {
   }
 
 
-
   // let initialSteps = CreateHash(timers);
 
-  useEffect (() => { 
-    if (timers.length > 0) {
-      setWorkoutSteps(() => {
-        let initialSteps = CreateHash(timers);
-        // window.location.hash = encodeURIComponent(workoutSteps);
-        return initialSteps;
+  // useEffect (() => { 
+  //   if (timers.length > 0) {
+  //     setWorkoutSteps(() => {
+  //       let initialSteps = CreateHash(timers);
+  //       // window.location.hash = encodeURIComponent(workoutSteps);
+  //       return initialSteps;
 
-      });
-      window.location.hash = encodeURIComponent(workoutSteps);
-      // window.location.hash = encodeURIComponent(initialSteps);
+  //     });
+  //     window.location.hash = encodeURIComponent(workoutSteps);
+  //     // window.location.hash = encodeURIComponent(initialSteps);
 
-    }
+  //   }
 
 
-    else {
-      const hash = (window.location.hash ?? '').slice(1);
-      let hashTimers = hash.split('-');
-      console.log(`hashTimers ${hashTimers}`);
-      const timerTypes = ['Stopwatch', 'Countdown', 'XY', 'Tabata'];
-      for (let i=0; i<hashTimers.length; i++){
-        if (timerTypes.includes(hashTimers[i])){
-          // if (hashTimers[i] === 'Stopwatch') {
-          console.log(`${hashTimers[i]} included`);
-          // let selectedTimer = 'Stopwatch';
-          let selectedTimer = hashTimers[i];
-          let startMinutes = CalculateMinutesSeconds(parseInt(hashTimers[i+1]))[0];
-          let startSeconds = CalculateMinutesSeconds(parseInt(hashTimers[i+1]))[1];
-          // console.log(`hashTimers[i] ${hashTimers[i]}`);
-          let rounds = '';
-          let startRestMinutes = '';
-          let startRestSeconds = '';
-          if (selectedTimer === 'XY' || selectedTimer === 'Tabata') {
-            rounds = hashTimers[i+2];
-          }
+  //   else {
+  //     const hash = (window.location.hash ?? '').slice(1);
+  //     let hashTimers = hash.split('-');
+  //     console.log(`hashTimers ${hashTimers}`);
+  //     const timerTypes = ['Stopwatch', 'Countdown', 'XY', 'Tabata'];
+  //     for (let i=0; i<hashTimers.length; i++){
+  //       if (timerTypes.includes(hashTimers[i])){
+  //         // if (hashTimers[i] === 'Stopwatch') {
+  //         console.log(`${hashTimers[i]} included`);
+  //         // let selectedTimer = 'Stopwatch';
+  //         let selectedTimer = hashTimers[i];
+  //         let startMinutes = CalculateMinutesSeconds(parseInt(hashTimers[i+1]))[0];
+  //         let startSeconds = CalculateMinutesSeconds(parseInt(hashTimers[i+1]))[1];
+  //         // console.log(`hashTimers[i] ${hashTimers[i]}`);
+  //         let rounds = '';
+  //         let startRestMinutes = '';
+  //         let startRestSeconds = '';
+  //         if (selectedTimer === 'XY' || selectedTimer === 'Tabata') {
+  //           rounds = hashTimers[i+2];
+  //         }
   
-          if (selectedTimer === 'Tabata') {
-            startRestMinutes = CalculateMinutesSeconds(parseInt(hashTimers[i+3]))[0];
-            startRestSeconds = CalculateMinutesSeconds(parseInt(hashTimers[i+3]))[1];
-          }
+  //         if (selectedTimer === 'Tabata') {
+  //           startRestMinutes = CalculateMinutesSeconds(parseInt(hashTimers[i+3]))[0];
+  //           startRestSeconds = CalculateMinutesSeconds(parseInt(hashTimers[i+3]))[1];
+  //         }
   
-          saveTimer({
-            id: selectedTimer?.id,
-            index: (timers.length === 0) ? 0 : timers.length,
-            selectedTimer,
-            startMinutes,
-            startSeconds,
-            isRunning: 'not running',
-            rounds,
-            startRestMinutes,
-            startRestSeconds,
+  //         saveTimer({
+  //           id: selectedTimer?.id,
+  //           index: (timers.length === 0) ? 0 : timers.length,
+  //           selectedTimer,
+  //           startMinutes,
+  //           startSeconds,
+  //           isRunning: 'not running',
+  //           rounds,
+  //           startRestMinutes,
+  //           startRestSeconds,
             
-          });
+  //         });
           
-        }
-        console.log(`hashTimers 2 ${hashTimers}`);
-      }
-    }
+  //       }
+  //       console.log(`hashTimers 2 ${hashTimers}`);
+  //     }
+  //   }
   
-
- 
-
-
 
     
-  }, []);
+  // }, []);
 
-  useEffect(() => {
-    setWorkoutSteps(() => {
-      let steps = CreateHash(timers);
+//   useEffect(() => {
+//     setWorkoutSteps(() => {
+//       let steps = CreateHash(timers);
         
-    return steps;
-  });
-  window.location.hash = encodeURIComponent(workoutSteps);
+//     return steps;
+//   });
+//   window.location.hash = encodeURIComponent(workoutSteps);
 
-}, [timers]);
+// }, [timers]);
 
-  if (timers.length > 0) {
-    // window.location.hash = encodeURIComponent(initialSteps);
-    window.location.hash = encodeURIComponent(workoutSteps);
-  }
+//   if (timers.length > 0) {
+//     // window.location.hash = encodeURIComponent(initialSteps);
+//     window.location.hash = encodeURIComponent(workoutSteps);
+  // }
 
 
   return (

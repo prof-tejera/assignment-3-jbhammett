@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { makeId } from "../utils/helpers";
+import { makeId, CreateHash } from "../utils/helpers";
 
 export const TimersContext = React.createContext({});
 
@@ -9,7 +9,11 @@ const TimersProvider = ({ children }) => {
     const [currentTimer, setCurrentTimer] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(null);
     const [running, setRunning] = useState(false);
-  
+    const [hash, setHash] = useState(() => {
+        const hash = (window.location.hash ?? '').slice(1);
+        return decodeURIComponent(hash);
+    });
+
     const totalSeconds = useRef(0);
 
 
@@ -29,6 +33,8 @@ const TimersProvider = ({ children }) => {
         roundsOptions.push(j);
     }
 
+    // const hash = CreateHash(timers);
+
     return (
         <TimersContext.Provider
             value={{
@@ -45,6 +51,8 @@ const TimersProvider = ({ children }) => {
                 totalSeconds,
                 running,
                 setRunning,
+                hash,
+                setHash,
                 closeEditor,
                 deleteTimer: ({ id }) => setTimers(timers.filter(x => x.id !== id)),
                 openEditor: () => setSelectedTimer({}),

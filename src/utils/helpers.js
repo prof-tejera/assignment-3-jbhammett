@@ -69,6 +69,7 @@ export const makeId = () => {
     //   }
     }
     steps += '-';
+    console.log(`steps ${steps}`);
     return steps;
 
   });
