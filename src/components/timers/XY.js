@@ -3,11 +3,12 @@ import { useContext, useRef, useState, useEffect } from 'react';
 
 import DisplayTime from "../generic/DisplayTime";
 import DisplayRounds from "../generic/DisplayRounds";
+import DisplayDescription from "../generic/DisplayDescription";
 import Panel from "../generic/Panel";
 import { CalculateMinutesSeconds, CalculateTotalSeconds } from "../../utils/helpers";
 import { TimersContext } from "../../utils/TimersProvider";
 
-const XY = ({ id, index, startMinutes, startSeconds, rounds, isRunning }) => {
+const XY = ({ id, index, startMinutes, startSeconds, rounds, isRunning, description }) => {
     const { currentIndex, setCurrentIndex, running, setRunning, setTotalTime } = useContext(TimersContext);
 
     const duration = CalculateTotalSeconds(startMinutes, startSeconds);
@@ -75,6 +76,7 @@ const XY = ({ id, index, startMinutes, startSeconds, rounds, isRunning }) => {
                     
                     >{isRunning}</h5>
                 </div>
+                {isRunning ==='running' && <DisplayDescription description={description}/>}
                 {isRunning === 'running' && <DisplayRounds round={roundsCounter} totalRounds={rounds} />}
                 {(isRunning ==='not running' || isRunning ==='completed') && <DisplayRounds round="1" totalRounds={rounds} />}
                                 

@@ -2,13 +2,14 @@ import React from "react";
 import { useState, useEffect, useRef, useContext } from 'react';
 
 import DisplayTime from "../generic/DisplayTime";
+import DisplayDescription from "../generic/DisplayDescription";
 import Panel from "../generic/Panel";
 import { TimersContext } from "../../utils/TimersProvider";
 
 import { CalculateMinutesSeconds, CalculateTotalSeconds } from "../../utils/helpers";
 
 
-const Countdown = ({ id, index, startMinutes, startSeconds, isRunning})=> {
+const Countdown = ({ id, index, startMinutes, startSeconds, isRunning, description})=> {
     const { currentIndex, setCurrentIndex, running, setRunning, setTotalTime } = useContext(TimersContext);
     
     const duration = CalculateTotalSeconds(startMinutes, startSeconds);
@@ -67,7 +68,7 @@ const Countdown = ({ id, index, startMinutes, startSeconds, isRunning})=> {
                     
                     >{isRunning}</h5>
                 </div>
-
+                {isRunning ==='running' && <DisplayDescription description={description}/>}
                 {isRunning === 'running' && <DisplayTime minutes={CalculateMinutesSeconds(counter)[0]} seconds={CalculateMinutesSeconds(counter)[1]}/>}
                 {isRunning === 'not running' && <DisplayTime minutes={startMinutes} seconds={startSeconds}/>}
                 {isRunning === 'completed' && <DisplayTime minutes="0" seconds="0" />}

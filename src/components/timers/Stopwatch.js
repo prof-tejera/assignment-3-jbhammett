@@ -2,12 +2,13 @@ import React from "react";
 import {  useContext, useRef, useState, useEffect } from 'react';
 
 import DisplayTime from "../generic/DisplayTime";
+import DisplayDescription from "../generic/DisplayDescription";
 import Panel from "../generic/Panel";
 import { CalculateMinutesSeconds, CalculateTotalSeconds } from "../../utils/helpers";
 import { TimersContext } from "../../utils/TimersProvider";
 
 
-const Stopwatch = ({id, index, startMinutes, startSeconds, isRunning }) =>  {
+const Stopwatch = ({id, index, startMinutes, startSeconds, isRunning, description }) =>  {
     const { currentIndex, setCurrentIndex, running, setRunning, totalTime, setTotalTime } = useContext(TimersContext);
     const [counter, setCounter] = useState(0);
     const secondsCountInterval = useRef(0);
@@ -70,8 +71,6 @@ const Stopwatch = ({id, index, startMinutes, startSeconds, isRunning }) =>  {
         }
       }, [counter, setCurrentIndex]);
 
-
-
 	return (
         <div>
             <Panel type="Stopwatch">
@@ -83,7 +82,7 @@ const Stopwatch = ({id, index, startMinutes, startSeconds, isRunning }) =>  {
                     
                     >{isRunning}</h5>
                 </div>
-                
+                {isRunning ==='running' && <DisplayDescription description={description}/>}
                 {isRunning === 'running' && <DisplayTime minutes={CalculateMinutesSeconds(counter)[0]} seconds={CalculateMinutesSeconds(counter)[1]}/>}
                 {isRunning === 'not running' && <DisplayTime minutes="0" seconds="0"/>}
                 {isRunning === 'completed' && <DisplayTime minutes={startMinutes} seconds={startSeconds}/>}

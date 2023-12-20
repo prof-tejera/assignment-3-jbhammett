@@ -3,6 +3,7 @@ import { useContext, useState } from 'react';
 
 import Button from "../components/generic/Button";
 import TimerInput from "../components/generic/TimerInput";
+import DescriptionInput from "../components/generic/DescriptionInput";
 import TimersView from "../views/TimersView";
 
 import { TimersContext } from "../utils/TimersProvider";
@@ -16,6 +17,7 @@ const Editor = () => {
     const [rounds, setRounds] = useState(selectedTimer?.rounds ?? '');
     const [startRestMinutes, setStartRestMinutes] = useState(selectedTimer?.restMinutes ?? '');
     const [startRestSeconds, setStartRestSeconds] = useState(selectedTimer?.restSeconds ?? '');
+    const [description, setDescription] = useState(selectedTimer?.description ?? '');
     
     const handleAddTimerInput = (value) => {
         setSelectedTimer(value);
@@ -41,6 +43,10 @@ const Editor = () => {
         setRounds(value);
     }
 
+    const handleSelectedTimerDescription = (value) => {
+        setDescription(value);
+    }
+
     let listOptions = '';
     let options = ['Choose One', 'Stopwatch', 'Countdown', 'XY', 'Tabata'];
     if (options){
@@ -61,16 +67,29 @@ const Editor = () => {
                 (<div>
                     <h6 style={{
                         marginBottom:0,
+                    }}>
+                        Description: 
+                    </h6>
+                    <DescriptionInput onChange={handleSelectedTimerDescription} />
+                    <h6 style={{
+                        marginBottom:0,
                         }}>Minutes : Seconds
                     </h6>
                     <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/> 
                     <span>:</span>
                     <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>
+                
                 </div>) 
             }
 
             {selectedTimer === 'Countdown' && 
                 (<div>
+                    <h6 style={{
+                        marginBottom:0,
+                    }}>
+                        Description: 
+                    </h6>
+                    <DescriptionInput onChange={handleSelectedTimerDescription} />
                     <h6 style={{
                         marginBottom:0,
                         }}>Minutes : Seconds
@@ -83,6 +102,12 @@ const Editor = () => {
 
             {selectedTimer === 'XY' && 
                 (<div>
+                    <h6 style={{
+                        marginBottom:0,
+                    }}>
+                        Description: 
+                    </h6>
+                    <DescriptionInput onChange={handleSelectedTimerDescription} />
                     <h6 style={{
                         marginBottom:0,
                         }}>Minutes : Seconds
@@ -100,6 +125,12 @@ const Editor = () => {
 
             {selectedTimer === 'Tabata' && 
                 (<div>
+                    <h6 style={{
+                        marginBottom:0,
+                    }}>
+                        Description: 
+                    </h6>
+                    <DescriptionInput onChange={handleSelectedTimerDescription} />
                     <h5 style={{
                         marginBottom: 2,
                     }}>
@@ -153,7 +184,7 @@ const Editor = () => {
                                 rounds,
                                 startRestMinutes,
                                 startRestSeconds,
-                                
+                                description,    
                             });
                         }}
                     />
@@ -187,21 +218,6 @@ const AddTimersView = () => {
             </span>
 
 
-    {/* <Timers>
-        {timersDisplay.map((timer) => (
-          <div key={timer.index}>
-            <Timer >
-              <TimerTitle>{timer.title}</TimerTitle>
-              {timer.C}
-            </Timer>
-            <Button value="Delete Timer" onClick={() => {
-                    deleteTimer({ id: timer.id });
-                  }} />
-                 
-                  
-          </div>
-        ))}
-      </Timers> */}
       <h3>Workout Schedule</h3>
       {timers.map((timer) => (
         <div>

@@ -5,10 +5,11 @@ import DisplayTime from "../generic/DisplayTime";
 import DisplayRounds from "../generic/DisplayRounds";
 import Panel from "../generic/Panel";
 import DisplayTitle from "../generic/DisplayTitle";
+import DisplayDescription from "../generic/DisplayDescription";
 import { CalculateMinutesSeconds, CalculateTotalSeconds } from "../../utils/helpers";
 import { TimersContext } from "../../utils/TimersProvider";
 
-const Tabata = ({ id, index, startMinutes, startSeconds, rounds, startRestMinutes, startRestSeconds, isRunning }) => {
+const Tabata = ({ id, index, startMinutes, startSeconds, rounds, startRestMinutes, startRestSeconds, isRunning, description }) => {
     
     const { currentIndex, setCurrentIndex, running, setRunning, setTotalTime } = useContext(TimersContext);
 
@@ -103,6 +104,7 @@ const Tabata = ({ id, index, startMinutes, startSeconds, rounds, startRestMinute
                 
                 >{isRunning}</h5>
             </div>
+            {isRunning ==='running' && <DisplayDescription description={description}/>}
   
 
             <DisplayTitle title="Work" />

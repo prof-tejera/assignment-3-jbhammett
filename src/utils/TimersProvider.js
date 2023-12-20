@@ -107,7 +107,7 @@ const TimersProvider = ({ children }) => {
                     
                 },
 
-                saveTimer: ({ id, index, selectedTimer, startMinutes, startSeconds, rounds, startRestMinutes, startRestSeconds, isRunning, reset }) => {
+                saveTimer: ({ id, index, selectedTimer, startMinutes, startSeconds, rounds, startRestMinutes, startRestSeconds, isRunning, description }) => {
                     const updatedTimer = {
                         id,
                         index,
@@ -118,7 +118,7 @@ const TimersProvider = ({ children }) => {
                         startRestMinutes,
                         startRestSeconds,
                         isRunning,
-                        reset,
+                        description,
                     };
                     console.log(`${selectedTimer} saved`);
                     if (id) {
