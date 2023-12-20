@@ -30,7 +30,7 @@ const Timer = styled.div`
 const TimerTitle = styled.div``;
 
 const TimersView = () => {
-  const { timers, hash, setHash, saveTimer, deleteTimer, handleTimerStart, handleWorkoutReset, handlePauseResume, handleFastForward} = useContext(TimersContext);
+  const { timers, totalTime, setTotalTime, hash, setHash, saveTimer, deleteTimer, handleTimerStart, handleWorkoutReset, handlePauseResume, handleFastForward} = useContext(TimersContext);
   // const [ workoutSteps, setWorkoutSteps ] = useState(() => { 
   //   const hash = (window.location.hash ?? '').slice(1);
   //   return decodeURIComponent(hash);
@@ -55,7 +55,7 @@ const TimersView = () => {
    }, []);
 
   
-  let totalTime = 0;
+  // let totalTime = 0;
   const timersDisplay = []
   for (let i=0; i<timers.length; i++){
     if (timers[i].selectedTimer === 'Stopwatch'){
@@ -71,8 +71,8 @@ const TimersView = () => {
       timersDisplay.push({title: "Tabata", id: timers[i].id, index: i, C: <Tabata id={timers[i].id} index={i} startMinutes={timers[i].startMinutes} startSeconds={timers[i].startSeconds} rounds={timers[i].rounds} startRestMinutes={timers[i].startRestMinutes} startRestSeconds={timers[i].startRestSeconds} isRunning={timers[i].isRunning} />})
     }
 
-    const currentTimerTime = CalculateTotalSeconds(timers[i].startMinutes, timers[i].startSeconds);
-    totalTime = totalTime + currentTimerTime;
+    // const currentTimerTime = CalculateTotalSeconds(timers[i].startMinutes, timers[i].startSeconds);
+    // totalTime = totalTime + currentTimerTime;
 
   }
 
@@ -156,6 +156,26 @@ const TimersView = () => {
 //     window.location.hash = encodeURIComponent(workoutSteps);
   // }
 
+  useEffect (() => {
+    setTotalTime(() => {
+      let total = 0;
+      let rounds = 1;
+      for (let i=0; i<timers.length; i++){
+          if (timers[i].rounds) {
+            rounds = timers[i].rounds;
+          }
+          else {
+            rounds = 1;
+          }
+          
+          const workTime = rounds * (CalculateTotalSeconds(timers[i].startMinutes, timers[i].startSeconds));
+          const restTime = rounds * (CalculateTotalSeconds(timers[i].startRestMinutes, timers[i].startRestSeconds));
+          total = total + workTime + restTime;
+      }
+      console.log(`total ${total}`);
+      return total;
+    });
+  }, [timers])
 
   return (
 

@@ -8,7 +8,7 @@ import { CalculateMinutesSeconds, CalculateTotalSeconds } from "../../utils/help
 import { TimersContext } from "../../utils/TimersProvider";
 
 const XY = ({ id, index, startMinutes, startSeconds, rounds, isRunning }) => {
-    const { currentIndex, setCurrentIndex, running, setRunning } = useContext(TimersContext);
+    const { currentIndex, setCurrentIndex, running, setRunning, setTotalTime } = useContext(TimersContext);
 
     const duration = CalculateTotalSeconds(startMinutes, startSeconds);
     const [counter, setCounter] = useState(duration);
@@ -25,20 +25,6 @@ const XY = ({ id, index, startMinutes, startSeconds, rounds, isRunning }) => {
         isRunning = 'not running';
     }
 
-  //   useEffect(() => {
-  //     // if (isRunning === 'not running') {
-  //     if (running === false && isRunning === 'not running') {
-  //       clearInterval(secondsCountInterval.current);
-  //       setCounter(duration);
-  //       setRunning(false);
-  //     }
-  //     else if (isRunning === 'paused'){
-  //       clearInterval(secondsCountInterval.current);
-  //       setRunning(false);
-  //     }
-
-      
-  // }, [isRunning, setRunning]);
 
     useEffect(() => {
         if (index === currentIndex && running === true) {
@@ -46,6 +32,11 @@ const XY = ({ id, index, startMinutes, startSeconds, rounds, isRunning }) => {
             setCounter(prev => {
               return prev - 1;
             });
+
+            setTotalTime(prev => {
+              return prev - 1;
+            });
+
           }, 1000);
         }
 

@@ -8,7 +8,7 @@ import { TimersContext } from "../../utils/TimersProvider";
 
 
 const Stopwatch = ({id, index, startMinutes, startSeconds, isRunning }) =>  {
-    const { currentIndex, setCurrentIndex, running, setRunning } = useContext(TimersContext);
+    const { currentIndex, setCurrentIndex, running, setRunning, totalTime, setTotalTime } = useContext(TimersContext);
     const [counter, setCounter] = useState(0);
     const secondsCountInterval = useRef(0);
     const totalSeconds = useRef(CalculateTotalSeconds(startMinutes, startSeconds));
@@ -45,6 +45,10 @@ const Stopwatch = ({id, index, startMinutes, startSeconds, isRunning }) =>  {
             secondsCountInterval.current = setInterval(() => {
             setCounter(prev => {
               return prev + 1;
+            });
+
+            setTotalTime(prev => {
+              return prev - 1;
             });
           }, 1000);
         }

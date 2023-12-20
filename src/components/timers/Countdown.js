@@ -9,7 +9,7 @@ import { CalculateMinutesSeconds, CalculateTotalSeconds } from "../../utils/help
 
 
 const Countdown = ({ id, index, startMinutes, startSeconds, isRunning})=> {
-    const { currentIndex, setCurrentIndex, running, setRunning } = useContext(TimersContext);
+    const { currentIndex, setCurrentIndex, running, setRunning, setTotalTime } = useContext(TimersContext);
     
     const duration = CalculateTotalSeconds(startMinutes, startSeconds);
     const [counter, setCounter] = useState(duration);
@@ -32,6 +32,11 @@ const Countdown = ({ id, index, startMinutes, startSeconds, isRunning})=> {
             setCounter(prev => {
               return prev - 1;
             });
+
+            setTotalTime(prev => {
+                return prev - 1;
+              });
+
           }, 1000);
         }
 

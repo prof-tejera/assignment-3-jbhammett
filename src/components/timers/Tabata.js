@@ -10,7 +10,7 @@ import { TimersContext } from "../../utils/TimersProvider";
 
 const Tabata = ({ id, index, startMinutes, startSeconds, rounds, startRestMinutes, startRestSeconds, isRunning }) => {
     
-    const { currentIndex, setCurrentIndex, running, setRunning } = useContext(TimersContext);
+    const { currentIndex, setCurrentIndex, running, setRunning, setTotalTime } = useContext(TimersContext);
 
     const workDuration = CalculateTotalSeconds(startMinutes, startSeconds);
     const restDuration = CalculateTotalSeconds(startRestMinutes, startRestSeconds);
@@ -50,11 +50,19 @@ const Tabata = ({ id, index, startMinutes, startSeconds, rounds, startRestMinute
                     setCounter(prev => {
                         return prev - 1;
                     });
+
+                    setTotalTime(prev => {
+                        return prev - 1;
+                      });
                 }
                 else if (counter <= 0 && restCounter > 0){
                     setRestCounter(prevRest => {
                         return prevRest - 1;
                     });
+
+                    setTotalTime(prev => {
+                        return prev - 1;
+                      });
                 }
             
           }, 1000);

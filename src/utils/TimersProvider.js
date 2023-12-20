@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { makeId, CreateHash } from "../utils/helpers";
+import { makeId, CreateHash, CalculateTotalSeconds } from "../utils/helpers";
 
 export const TimersContext = React.createContext({});
 
@@ -13,6 +13,16 @@ const TimersProvider = ({ children }) => {
         const hash = (window.location.hash ?? '').slice(1);
         return decodeURIComponent(hash);
     });
+    // const [totalTime, setTotalTime] = useState(()=> {
+    //     let total = 0;
+    //     for (let i=0; i<timers.length; i++){
+    //         const time = CalculateTotalSeconds(timers[i].startMinutes, timers[i].startSeconds);
+    //         total = total + time;
+    //     }
+    //     console.log(`total ${total}`);
+    //     return total;
+    // })
+    const [totalTime, setTotalTime] = useState(0);
 
     const totalSeconds = useRef(0);
 
@@ -53,6 +63,8 @@ const TimersProvider = ({ children }) => {
                 setRunning,
                 hash,
                 setHash,
+                totalTime,
+                setTotalTime,
                 closeEditor,
                 deleteTimer: ({ id }) => setTimers(timers.filter(x => x.id !== id)),
                 openEditor: () => setSelectedTimer({}),
