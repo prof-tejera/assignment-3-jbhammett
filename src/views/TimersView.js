@@ -187,7 +187,7 @@ const TimersView = () => {
                 {timer.C}
               </Timer>
 
-              <Button value="Edit" color="#aaa0ff" onClick={() => setEditTimer(timer)}/>
+              <Button value="Edit" color="#aaa0ff" onClick={() => setEditTimer(timers[timer.index])}/>
 
               <Button value="Delete" color="#aaa0ff" onClick={() => {
                       deleteTimer({ id: timer.id });
