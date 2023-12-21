@@ -1,17 +1,17 @@
 import React from "react";
 import { useContext, useState } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 
 import Button from "../components/generic/Button";
 import TimerInput from "../components/generic/TimerInput";
 import DescriptionInput from "../components/generic/DescriptionInput";
-import TimersView from "../views/TimersView";
+import MyFallbackComponent from "../views/TimersView";
 
 import { TimersContext } from "../utils/TimersProvider";
 
 
 export const Editor = ({ editorTimer }) => {
     const { timers, editTimer, saveTimer, closeEditor, secondsOptions, minutesOptions, roundsOptions } = useContext(TimersContext);
-    // const [selectedTimer, setSelectedTimer ] = useState(null);
     const [selectedTimer, setSelectedTimer ] = useState(editorTimer?.selectedTimer ?? '');
     const [startMinutes, setStartMinutes] = useState(editorTimer?.startMinutes ?? '');
     const [startSeconds, setStartSeconds] = useState(editorTimer?.startSeconds ?? '');
@@ -60,153 +60,155 @@ export const Editor = ({ editorTimer }) => {
     }
     // console.log(`editorTimer ${editorTimer.selectedTimer}`);
     return (
-        <div>
-            {!editorTimer &&
-                <select id="select-timers" onChange={e => handleAddTimerInput(e.target.value)}>
-                {/* <select value={editTimer.selectedTimer} onChange={e => handleAddTimerInput(e.target.value)}> */}
-                    {listOptions}
-                </select>}
-         
-            {(selectedTimer === 'Stopwatch' || (editorTimer && editorTimer.selectedTimer === 'Stopwatch')) &&  
-            //  {selectedTimer === 'Stopwatch' && 
-                (<div>
-                    <h6 style={{
-                        marginBottom:0,
-                    }}>
-                        Description: 
-                    </h6>
-                    <DescriptionInput value={editTimer.description} onChange={handleSelectedTimerDescription} />
-                    <h6 style={{
-                        marginBottom:0,
-                        }}>Minutes : Seconds
-                    </h6>
-                    <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/> 
-                    <span>:</span>
-                    <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>
-                
-                </div>) 
-            }
+        <ErrorBoundary fallback={<div>Something Failed</div>} FallbackComponent={MyFallbackComponent}>
 
-            {selectedTimer === 'Countdown' && 
-                (<div>
-                    <h6 style={{
-                        marginBottom:0,
-                    }}>
-                        Description: 
-                    </h6>
-                    <DescriptionInput onChange={handleSelectedTimerDescription} />
-                    <h6 style={{
-                        marginBottom:0,
-                        }}>Minutes : Seconds
-                    </h6>
-                    <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/> 
-                    <span>:</span>
-                    <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>
-                </div>) 
-            }
-
-            {selectedTimer === 'XY' && 
-                (<div>
-                    <h6 style={{
-                        marginBottom:0,
-                    }}>
-                        Description: 
-                    </h6>
-                    <DescriptionInput onChange={handleSelectedTimerDescription} />
-                    <h6 style={{
-                        marginBottom:0,
-                        }}>Minutes : Seconds
-                    </h6>
-                    <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/> 
-                    <span>:</span>
-                    <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>
-                    <h6 style={{
-                        marginBottom:0,
-                        }}>Rounds
-                    </h6>
-                    <TimerInput options={roundsOptions} timeType="Rounds" onChange={handleSelectedTimerRounds}/>
-                </div>) 
-            }
-
-            {selectedTimer === 'Tabata' && 
-                (<div>
-                    <h6 style={{
-                        marginBottom:0,
-                    }}>
-                        Description: 
-                    </h6>
-                    <DescriptionInput onChange={handleSelectedTimerDescription} />
-                    <h5 style={{
-                        marginBottom: 2,
-                    }}>
-                        Work
-                        </h5>
-                    <h6 style={{
-                        marginTop: 0,
-                        marginBottom:2,
-                        }}>Minutes : Seconds
-                    </h6>
-                    <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/> 
-                    <span>:</span>
-                    <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>
-                    <div>
-                    <h5 style={{
-                        marginBottom:2,
-                        }}>
-                        Rest
-                    </h5>
+            <div>
+                {!editorTimer &&
+                    <select id="select-timers" onChange={e => handleAddTimerInput(e.target.value)}>
+                    {/* <select value={editTimer.selectedTimer} onChange={e => handleAddTimerInput(e.target.value)}> */}
+                        {listOptions}
+                    </select>}
+            
+                {(selectedTimer === 'Stopwatch' || (editorTimer && editorTimer.selectedTimer === 'Stopwatch')) &&  
+                //  {selectedTimer === 'Stopwatch' && 
+                    (<div>
                         <h6 style={{
-                            marginTop:0,
+                            marginBottom:0,
+                        }}>
+                            Description: 
+                        </h6>
+                        <DescriptionInput value={editTimer.description} onChange={handleSelectedTimerDescription} />
+                        <h6 style={{
                             marginBottom:0,
                             }}>Minutes : Seconds
                         </h6>
-                        <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerRestMinutes}/> 
+                        <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/> 
                         <span>:</span>
-                        <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerRestSeconds}/>
-                    </div>
-
-                    <h5 style={{
-                        marginBottom:2,
-                        }}>
-                        Rounds
-                    </h5>
-                    <TimerInput options={roundsOptions} timeType="Rounds" onChange={handleSelectedTimerRounds}/>
-                </div>) 
-            }
-
-            {selectedTimer && 
-                <div>
-                    <Button value="Save"
-                        color="#aaa0ff"
-                        onClick={() => {
-                            saveTimer({
-                                id: editorTimer?.id,
-                                index: (timers.length === 0) ? 0 : timers.length,
-                                selectedTimer,
-                                startMinutes,
-                                startSeconds,
-                                isRunning: 'not running',
-                                rounds,
-                                startRestMinutes,
-                                startRestSeconds,
-                                description,    
-                            });
-                        }}
-                    />
+                        <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>
                     
-                    <Button value="Cancel"
-                        color="#aaa0ff" 
-                        onClick={() => {
-                            closeEditor();
-                    }} />
-            </div>}
+                    </div>) 
+                }
+
+                {selectedTimer === 'Countdown' && 
+                    (<div>
+                        <h6 style={{
+                            marginBottom:0,
+                        }}>
+                            Description: 
+                        </h6>
+                        <DescriptionInput onChange={handleSelectedTimerDescription} />
+                        <h6 style={{
+                            marginBottom:0,
+                            }}>Minutes : Seconds
+                        </h6>
+                        <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/> 
+                        <span>:</span>
+                        <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>
+                    </div>) 
+                }
+
+                {selectedTimer === 'XY' && 
+                    (<div>
+                        <h6 style={{
+                            marginBottom:0,
+                        }}>
+                            Description: 
+                        </h6>
+                        <DescriptionInput onChange={handleSelectedTimerDescription} />
+                        <h6 style={{
+                            marginBottom:0,
+                            }}>Minutes : Seconds
+                        </h6>
+                        <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/> 
+                        <span>:</span>
+                        <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>
+                        <h6 style={{
+                            marginBottom:0,
+                            }}>Rounds
+                        </h6>
+                        <TimerInput options={roundsOptions} timeType="Rounds" onChange={handleSelectedTimerRounds}/>
+                    </div>) 
+                }
+
+                {selectedTimer === 'Tabata' && 
+                    (<div>
+                        <h6 style={{
+                            marginBottom:0,
+                        }}>
+                            Description: 
+                        </h6>
+                        <DescriptionInput onChange={handleSelectedTimerDescription} />
+                        <h5 style={{
+                            marginBottom: 2,
+                        }}>
+                            Work
+                            </h5>
+                        <h6 style={{
+                            marginTop: 0,
+                            marginBottom:2,
+                            }}>Minutes : Seconds
+                        </h6>
+                        <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/> 
+                        <span>:</span>
+                        <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>
+                        <div>
+                        <h5 style={{
+                            marginBottom:2,
+                            }}>
+                            Rest
+                        </h5>
+                            <h6 style={{
+                                marginTop:0,
+                                marginBottom:0,
+                                }}>Minutes : Seconds
+                            </h6>
+                            <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerRestMinutes}/> 
+                            <span>:</span>
+                            <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerRestSeconds}/>
+                        </div>
+
+                        <h5 style={{
+                            marginBottom:2,
+                            }}>
+                            Rounds
+                        </h5>
+                        <TimerInput options={roundsOptions} timeType="Rounds" onChange={handleSelectedTimerRounds}/>
+                    </div>) 
+                }
+
+                {selectedTimer && 
+                    <div>
+                        <Button value="Save"
+                            color="#aaa0ff"
+                            onClick={() => {
+                                saveTimer({
+                                    id: editorTimer?.id,
+                                    index: (timers.length === 0) ? 0 : timers.length,
+                                    selectedTimer,
+                                    startMinutes,
+                                    startSeconds,
+                                    isRunning: 'not running',
+                                    rounds,
+                                    startRestMinutes,
+                                    startRestSeconds,
+                                    description,    
+                                });
+                            }}
+                        />
+                        
+                        <Button value="Cancel"
+                            color="#aaa0ff" 
+                            onClick={() => {
+                                closeEditor();
+                        }} />
+                </div>}
 
 
 
-        </div>
+            </div>
 
 
-
+    </ErrorBoundary>
     );
 };
 

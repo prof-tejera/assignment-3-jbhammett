@@ -1,5 +1,6 @@
 import React from "react";
 import { useContext, useState, useEffect } from "react";
+import { ErrorBoundary } from 'react-error-boundary';
 import styled from "styled-components";
 
 import Stopwatch from "../components/timers/Stopwatch";
@@ -29,6 +30,16 @@ const Timer = styled.div`
 `;
 
 const TimerTitle = styled.div``;
+
+function MyFallbackComponent({ error, resetErrorBoundary }) {
+  return (
+    <div role="alert">
+      <p>Something went wrong:</p>
+      <pre>{error.message}</pre>
+      <button onClick={resetErrorBoundary}>Try again</button>
+    </div>
+  );
+}
 
 const TimersView = () => {
   const { timers, editorOpen, editTimer, setEditTimer, openTimer, openEditor, totalTime, setTotalTime, hash, setHash, saveTimer, deleteTimer, handleTimerStart, handleWorkoutReset, handlePauseResume, handleFastForward} = useContext(TimersContext);
@@ -89,41 +100,42 @@ const TimersView = () => {
   }, [timers])
 
   return (
+    <ErrorBoundary fallback={<div>Something Failed</div>} FallbackComponent={MyFallbackComponent}>
 
-    <div>
-      <Button value="Start Workout" color='#aaa0ff' onClick={handleTimerStart} />
-      <Button value="Reset" color='#aaa0ff' onClick={handleWorkoutReset} />
-      <Button value="Pause/Resume" color='#aaa0ff' onClick={handlePauseResume} />
-      <Button value="Fast Forward" color='#aaa0ff' onClick={handleFastForward} />
-      <h2>Total Workout Time </h2>
-      <DisplayTime minutes={CalculateMinutesSeconds(totalTime)[0]} seconds={CalculateMinutesSeconds(totalTime)[1]} />
+      <div>
+        <Button value="Start Workout" color='#aaa0ff' onClick={handleTimerStart} />
+        <Button value="Reset" color='#aaa0ff' onClick={handleWorkoutReset} />
+        <Button value="Pause/Resume" color='#aaa0ff' onClick={handlePauseResume} />
+        <Button value="Fast Forward" color='#aaa0ff' onClick={handleFastForward} />
+        <h2>Total Workout Time </h2>
+        <DisplayTime minutes={CalculateMinutesSeconds(totalTime)[0]} seconds={CalculateMinutesSeconds(totalTime)[1]} />
 
-      <Timers>
-      {/* {editTimer && <Editor editTimer={editTimer} />} */}
-      {editTimer && <Editor editorTimer={editTimer} />}
-        {timersDisplay.map((timer) => (
-          <div key={timer.index}>
-            <Timer >
-              {timer.C}
-            </Timer>
+        <Timers>
+        {/* {editTimer && <Editor editTimer={editTimer} />} */}
+        {editTimer && <Editor editorTimer={editTimer} />}
+          {timersDisplay.map((timer) => (
+            <div key={timer.index}>
+              <Timer >
+                {timer.C}
+              </Timer>
 
-            {/* <Button value="Edit Timer" color="#aaa0ff" onClick={() => openTimer({ index: timer.index })} /> */}
-            <Button value="Edit" color="#aaa0ff" onClick={() => setEditTimer(timer)}/>
-            {/* <Button value="Edit Timer" color="#aaa0ff" onClick={() => openEditor({ index: timer.index })} /> */}
-                {/* {editorOpen && <Editor />} */}
-               
+              {/* <Button value="Edit Timer" color="#aaa0ff" onClick={() => openTimer({ index: timer.index })} /> */}
+              <Button value="Edit" color="#aaa0ff" onClick={() => setEditTimer(timer)}/>
+              {/* <Button value="Edit Timer" color="#aaa0ff" onClick={() => openEditor({ index: timer.index })} /> */}
+                  {/* {editorOpen && <Editor />} */}
+                
 
-            <Button value="Delete" color="#aaa0ff" onClick={() => {
-                    deleteTimer({ id: timer.id });
-                  }} />
-                  
-          </div>
-          
-        ))}
-      </Timers>
-      
-    </div>
-  );
-};
+              <Button value="Delete" color="#aaa0ff" onClick={() => {
+                      deleteTimer({ id: timer.id });
+                    }} />
+                    
+            </div>
+            
+          ))}
+        </Timers>
+        
+      </div>
+  </ErrorBoundary>
+)};
 
 export default TimersView;
