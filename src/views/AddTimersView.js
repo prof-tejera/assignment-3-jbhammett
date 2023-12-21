@@ -67,18 +67,15 @@ export const Editor = ({ editorTimer }) => {
 
             <div>
                 <h2>Editor</h2>
-                    {/* <select id="select-timers" onChange={e => handleAddTimerInput(e.target.value)}> */}
                     {editorTimer && <select value={selectedTimer.selectedTimer} onChange={e => handleAddTimerInput(e.target.value)}>
                         {listOptions}
                     </select>}
-                    {/* } */}
 
                     {!editorTimer && <select onChange={e => handleAddTimerInput(e.target.value)}>
                         {listOptions}
                     </select>}
             
                 {(selectedTimer === 'Stopwatch' || (selectedTimer && selectedTimer.selectedTimer === 'Stopwatch')) &&  
-                //  {selectedTimer === 'Stopwatch' && 
                     (<div>
                         
                         <h6 style={{
@@ -102,7 +99,7 @@ export const Editor = ({ editorTimer }) => {
                     </div>) 
                 }
 
-                {selectedTimer === 'Countdown' && (selectedTimer && selectedTimer.selectedTimer === 'Countdown') &&
+                {selectedTimer === 'Countdown' && 
                     (<div>
                         <h6 style={{
                             marginBottom:0,
@@ -123,7 +120,8 @@ export const Editor = ({ editorTimer }) => {
                     </div>) 
                 }
 
-                {selectedTimer === 'XY' && (selectedTimer && selectedTimer.selectedTimer === 'XY') &&
+                {/* {selectedTimer === 'XY' && (selectedTimer && selectedTimer.selectedTimer === 'XY') && */}
+                {selectedTimer === 'XY' &&
                     (<div>
                         <h6 style={{
                             marginBottom:0,
@@ -150,7 +148,7 @@ export const Editor = ({ editorTimer }) => {
                     </div>) 
                 }
 
-                {selectedTimer === 'Tabata' && (selectedTimer && selectedTimer.selectedTimer === 'Tabata') &&
+                {selectedTimer === 'Tabata' && 
                     (<div>
                         <h6 style={{
                             marginBottom:0,
@@ -170,7 +168,7 @@ export const Editor = ({ editorTimer }) => {
                             }}>Minutes : Seconds
                         </h6>
                         {editorTimer && <TimerInput value={editorTimer.startMinutes} options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/>}
-                        {editorTimer && <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/>}
+                        {!editorTimer && <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/>}
                         <span>:</span>
                         {editorTimer && <TimerInput value={editorTimer.startSeconds} options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>}
                         {!editorTimer && <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>}
