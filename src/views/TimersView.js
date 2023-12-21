@@ -62,7 +62,7 @@ const TimersView = () => {
   const timersDisplay = []
   for (let i=0; i<timers.length; i++){
     if (timers[i].selectedTimer === 'Stopwatch'){
-      timersDisplay.push({title: "Stopwatch", id: timers[i].id, C: <Stopwatch id={timers[i].id} index={i} startMinutes={timers[i].startMinutes} startSeconds={timers[i].startSeconds} isRunning={timers[i].isRunning} description={timers[i].description} />})
+      timersDisplay.push({title: "Stopwatch", id: timers[i].id, index: i, C: <Stopwatch id={timers[i].id} index={i} startMinutes={timers[i].startMinutes} startSeconds={timers[i].startSeconds} isRunning={timers[i].isRunning} description={timers[i].description} />})
     }
     else if (timers[i].selectedTimer === 'Countdown'){
       timersDisplay.push({title: "Countdown", id: timers[i].id, index: i, C: <Countdown id={timers[i].id} index={i} startMinutes={timers[i].startMinutes} startSeconds={timers[i].startSeconds} isRunning={timers[i].isRunning} description={timers[i].description} />})
@@ -99,52 +99,73 @@ const TimersView = () => {
   }, [timers]) // eslint-disable-line
 
   const moveTimerUp = (timer, timers) => {
-    console.log(`timer ${timers[timer].selectedTimer}`);
-    // let tempTimers = timers.filter((t) => t.id !== timer.id);
-    // console.log(tempTimers);
-    
-    // console.log(`${timer.selectedTimer} ${timer.index}`);
-    
-    // console.log(`${timers[timer.index -1].selectedTimer} ${timers[timer.index -1].index}`);
-    const newTimers = [];
-    // let newIndex = parseInt(timer.index) - 1;
-    let newIndex = timer - 1;
+    if (timer >= 0) {
+      const newTimers = [];
+
+      let newIndex = timer - 1;
+
+      const tempTimer = timers[newIndex];
+      const currentTimer = timers[timer];
+      tempTimer.index = timer;
+      currentTimer.index = newIndex;
    
-    const tempTimer = timers[newIndex];
-   
-    // console.log(`tempTimer ${tempTimer.selectedTimer}`);
-    for (let i=0; i<timers.length; i++) {
-      // if(i === timer.index - 1){
-      //   console.log('push');
-      //   newTimers.push(timer);
-      // }
+      for (let i=0; i<timers.length; i++) {
+
+        if ((i===newIndex) && ((newIndex) >= 0)){
+
+          console.log(`currentTimer index ${currentTimer.index}`);
+          newTimers.push(currentTimer);
+          console.log(`newTimers ${newTimers[i]}`);
       
-      // newTimers.push(tempTimers[i]);
-    
-    
-    console.log(`i ${i}`);
-    console.log(`timer index ${newIndex}`);
-    // if ((i===timer.index - 1) && ((timer.index - 1) >= 0)){
-    if ((i===newIndex) && ((newIndex) >= 0)){
-      console.log('working');
-      timers[timer].index = newIndex;
-      newTimers.push(timers[timer]);
-   
-      tempTimer.index = timer.index;
-      newTimers.push(tempTimer);
-    }
-    else if (timers[i] !== timers[timer]) {
-      newTimers.push(timers[i]);
+          newTimers.push(tempTimer);
+          i = i+1;
+          
+        }
+        else if (timers[i].selectedTimer !== timers[timer].selectedTimer) {
+          newTimers.push(timers[i]);
+        }
+      }
+      
+      setTimers(newTimers);
+      
+      setHash(()=>{
+        return CreateHash(timers);
+      });
     }
   }
 
+  const moveTimerDown = (timer, timers) => {
+    if (timer < timers.length -1) {
+      const newTimers = [];
 
-    setTimers(newTimers);
-    
-    setHash(()=>{
-      return CreateHash(timers);
-  });
-  console.log(`timers ${timers}`);
+      let newIndex = timer + 1;
+
+      const tempTimer = timers[newIndex];
+      const currentTimer = timers[timer];
+      tempTimer.index = timer;
+      currentTimer.index = newIndex;
+   
+      for (let i=0; i<timers.length; i++) {
+
+        if ((i===timer) && (timer < timers.length)){
+          newTimers.push(tempTimer);
+          newTimers.push(currentTimer);
+      
+          
+          i = i+1;
+          
+        }
+        else if (timers[i].selectedTimer !== timers[timer].selectedTimer) {
+          newTimers.push(timers[i]);
+        }
+      }
+      
+      setTimers(newTimers);
+      
+      setHash(()=>{
+        return CreateHash(timers);
+      });
+    }
   }
 
   return (
@@ -171,8 +192,8 @@ const TimersView = () => {
               <Button value="Delete" color="#aaa0ff" onClick={() => {
                       deleteTimer({ id: timer.id });
                     }} />
-              {/* <Button value="Move Up" color="#aaa0ff" onClick={ moveTimerUp(timer, timers)} /> */}
-              <button onClick={() => { moveTimerUp(timer.index, timers)}}>Move Up</button>
+              {(timer.index > 0) && <button onClick={() => { moveTimerUp(timer.index, timers)}}>Move Up</button>}
+              {(timer.index < timers.length -1) && <button onClick={() => { moveTimerDown(timer.index, timers)}}>Move Down</button>}
                     
             </div>
             
