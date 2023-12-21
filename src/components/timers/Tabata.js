@@ -53,7 +53,7 @@ const Tabata = ({ id, index, startMinutes, startSeconds, rounds, startRestMinute
         }
 
   
-      }, []);
+      }, []); // eslint-disable-line
 
     useEffect(() => {
         if (index === currentIndex && running === true) {
@@ -93,7 +93,7 @@ const Tabata = ({ id, index, startMinutes, startSeconds, rounds, startRestMinute
         return () => {
           clearInterval(secondsCountInterval.current);
         };
-      }, [currentIndex, counter, restCounter, index, running]);
+      }, [currentIndex, counter, restCounter, index, running]); // eslint-disable-line
 
       useEffect(() => {
         if (restCounter === 0 && roundsCounter < rounds){

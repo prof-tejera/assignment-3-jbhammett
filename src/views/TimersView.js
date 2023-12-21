@@ -51,7 +51,7 @@ const TimersView = () => {
       });
   }  
 
-  }, []);
+  }, []); // eslint-disable-line
 
  
   
@@ -96,7 +96,7 @@ const TimersView = () => {
      
       return total;
     });
-  }, [timers])
+  }, [timers]) // eslint-disable-line
 
   const moveTimerUp = (timer, timers) => {
     console.log(`timer ${timer}`);

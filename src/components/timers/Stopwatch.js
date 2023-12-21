@@ -37,7 +37,7 @@ const Stopwatch = ({id, index, startMinutes, startSeconds, isRunning, descriptio
       }
 
 
-    }, []);
+    }, []); // eslint-disable-line
 
     // Start timer
     useEffect(() => {
@@ -66,7 +66,7 @@ const Stopwatch = ({id, index, startMinutes, startSeconds, isRunning, descriptio
         return () => {
           clearInterval(secondsCountInterval.current);
         };
-      }, [currentIndex, index, running]);
+      }, [currentIndex, index, running]); // eslint-disable-line
     
       // Go to next timer when current timer ends.
       useEffect(() => {

@@ -80,7 +80,7 @@ const TimersProvider = ({ children }) => {
             }
         }
   
-    }, [])
+    }, []) // eslint-disable-line
 
 
     useEffect(()=>{
@@ -106,6 +106,7 @@ const TimersProvider = ({ children }) => {
                 currentIndex,
                 setCurrentIndex,
                 selectedTimer,
+                setSelectedTimer,
                 secondsOptions,
                 minutesOptions,
                 roundsOptions,

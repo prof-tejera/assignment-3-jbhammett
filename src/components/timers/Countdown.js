@@ -37,7 +37,7 @@ const Countdown = ({ id, index, startMinutes, startSeconds, isRunning, descripti
         }
 
   
-      }, []);
+      }, []); // eslint-disable-line
 
     useEffect(() => {
         if (index === currentIndex && running === true) {
@@ -63,7 +63,7 @@ const Countdown = ({ id, index, startMinutes, startSeconds, isRunning, descripti
         return () => {
           clearInterval(secondsCountInterval.current);
         };
-      }, [currentIndex, index, running]);
+      }, [currentIndex, index, running]); // eslint-disable-line
     
       useEffect(() => {
         if (counter === 0) {

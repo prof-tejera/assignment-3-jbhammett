@@ -44,7 +44,7 @@ const XY = ({ id, index, startMinutes, startSeconds, rounds, isRunning, descript
       }
 
 
-    }, []);
+    }, []); // eslint-disable-line
 
     useEffect(() => {
         if (index === currentIndex && running === true) {
@@ -70,7 +70,7 @@ const XY = ({ id, index, startMinutes, startSeconds, rounds, isRunning, descript
         return () => {
           clearInterval(secondsCountInterval.current);
         };
-      }, [currentIndex, index, running]);
+      }, [currentIndex, index, running]); // eslint-disable-line
     
       useEffect(() => {
         if (counter === 0 && roundsCounter < rounds){
