@@ -63,15 +63,18 @@ export const Editor = ({ editorTimer }) => {
         <ErrorBoundary fallback={<div>Something Failed</div>} FallbackComponent={MyFallbackComponent}>
 
             <div>
-                {!editorTimer &&
+                {/* {!editorTimer && */}
+                <h2>Editor</h2>
                     <select id="select-timers" onChange={e => handleAddTimerInput(e.target.value)}>
                     {/* <select value={editTimer.selectedTimer} onChange={e => handleAddTimerInput(e.target.value)}> */}
                         {listOptions}
-                    </select>}
+                    </select>
+                    {/* } */}
             
                 {(selectedTimer === 'Stopwatch' || (editorTimer && editorTimer.selectedTimer === 'Stopwatch')) &&  
                 //  {selectedTimer === 'Stopwatch' && 
                     (<div>
+                        
                         <h6 style={{
                             marginBottom:0,
                         }}>
