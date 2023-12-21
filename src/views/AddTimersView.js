@@ -48,6 +48,8 @@ export const Editor = ({ editorTimer }) => {
         setDescription(value);
     }
 
+    document.getElementById('select-timers').value = editorTimer.selectedTimer;
+
     let listOptions = '';
     let options = ['Choose One', 'Stopwatch', 'Countdown', 'XY', 'Tabata'];
 
@@ -61,10 +63,11 @@ export const Editor = ({ editorTimer }) => {
     // console.log(`editorTimer ${editorTimer.selectedTimer}`);
     return (
         <div>
-            <select onChange={e => handleAddTimerInput(e.target.value)}>
-            {/* <select value={editTimer.selectedTimer} onChange={e => handleAddTimerInput(e.target.value)}> */}
-                {listOptions}
-            </select>
+            {!editorTimer &&
+                <select id="select-timers" onChange={e => handleAddTimerInput(e.target.value)}>
+                {/* <select value={editTimer.selectedTimer} onChange={e => handleAddTimerInput(e.target.value)}> */}
+                    {listOptions}
+                </select>}
          
             {(selectedTimer === 'Stopwatch' || (editorTimer && editorTimer.selectedTimer === 'Stopwatch')) &&  
             //  {selectedTimer === 'Stopwatch' && 
