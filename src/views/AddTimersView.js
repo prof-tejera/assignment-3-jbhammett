@@ -59,17 +59,23 @@ export const Editor = ({ editorTimer }) => {
     else {
         listOptions=<option>none</option>
     }
+
+
+
     return (
         <ErrorBoundary fallback={<div>Something Failed</div>} FallbackComponent={MyFallbackComponent}>
 
             <div>
                 <h2>Editor</h2>
                     {/* <select id="select-timers" onChange={e => handleAddTimerInput(e.target.value)}> */}
-                    <select value={editorTimer.selectedTimer} onChange={e => handleAddTimerInput(e.target.value)}>
-                    {/* <select value={"Stopwatch"} onChange={e => handleAddTimerInput(e.target.value)}> */}
+                    {editorTimer && <select value={selectedTimer.selectedTimer} onChange={e => handleAddTimerInput(e.target.value)}>
                         {listOptions}
-                    </select>
+                    </select>}
                     {/* } */}
+
+                    {!editorTimer && <select onChange={e => handleAddTimerInput(e.target.value)}>
+                        {listOptions}
+                    </select>}
             
                 {(selectedTimer === 'Stopwatch' || (selectedTimer && selectedTimer.selectedTimer === 'Stopwatch')) &&  
                 //  {selectedTimer === 'Stopwatch' && 
@@ -80,67 +86,79 @@ export const Editor = ({ editorTimer }) => {
                         }}>
                             Description: 
                         </h6>
-                        <DescriptionInput value={editorTimer.description} onChange={handleSelectedTimerDescription} />
+                        {editorTimer &&<DescriptionInput value={editorTimer.description} onChange={handleSelectedTimerDescription} />}
+                        {!editorTimer &&<DescriptionInput onChange={handleSelectedTimerDescription} />}
+                        
                         <h6 style={{
                             marginBottom:0,
                             }}>Minutes : Seconds
                         </h6>
-                        <TimerInput value={editorTimer.startMinutes} options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/> 
+                        {editorTimer && <TimerInput value={editorTimer.startMinutes} options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/>} 
+                        {!editorTimer && <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/>} 
                         <span>:</span>
-                        <TimerInput value={editorTimer.startSeconds} options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>
+                        {editorTimer && <TimerInput value={editorTimer.startSeconds} options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>}
+                        {!editorTimer && <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>}
                     
                     </div>) 
                 }
 
-                {selectedTimer === 'Countdown' && 
+                {selectedTimer === 'Countdown' && (selectedTimer && selectedTimer.selectedTimer === 'Countdown') &&
                     (<div>
                         <h6 style={{
                             marginBottom:0,
                         }}>
                             Description: 
                         </h6>
-                        <DescriptionInput onChange={handleSelectedTimerDescription} />
+                        {editorTimer && <DescriptionInput value={editorTimer.description} onChange={handleSelectedTimerDescription} />}
+                        {!editorTimer && <DescriptionInput onChange={handleSelectedTimerDescription} />}
                         <h6 style={{
                             marginBottom:0,
                             }}>Minutes : Seconds
                         </h6>
-                        <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/> 
+                        {editorTimer && <TimerInput value={editorTimer.startMinutes} options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/>} 
+                        {!editorTimer && <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/>} 
                         <span>:</span>
-                        <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>
+                        {editorTimer && <TimerInput value={editorTimer.startSeconds} options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>}
+                        {!editorTimer && <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>}
                     </div>) 
                 }
 
-                {selectedTimer === 'XY' && 
+                {selectedTimer === 'XY' && (selectedTimer && selectedTimer.selectedTimer === 'XY') &&
                     (<div>
                         <h6 style={{
                             marginBottom:0,
                         }}>
                             Description: 
                         </h6>
-                        <DescriptionInput onChange={handleSelectedTimerDescription} />
+                        {editorTimer && <DescriptionInput value={editorTimer.description} onChange={handleSelectedTimerDescription} />}
+                        {!editorTimer && <DescriptionInput onChange={handleSelectedTimerDescription} />}
                         <h6 style={{
                             marginBottom:0,
                             }}>Minutes : Seconds
                         </h6>
-                        <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/> 
+                        {editorTimer && <TimerInput value={editorTimer.startMinutes} options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/>} 
+                        {!editorTimer && <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/>} 
                         <span>:</span>
-                        <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>
+                        {editorTimer && <TimerInput value={editorTimer.startSeconds} options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>}
+                        {!editorTimer && <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>}
                         <h6 style={{
                             marginBottom:0,
                             }}>Rounds
                         </h6>
-                        <TimerInput options={roundsOptions} timeType="Rounds" onChange={handleSelectedTimerRounds}/>
+                        {editorTimer && <TimerInput value={editorTimer.rounds} options={roundsOptions} timeType="Rounds" onChange={handleSelectedTimerRounds}/>}
+                        {!editorTimer && <TimerInput options={roundsOptions} timeType="Rounds" onChange={handleSelectedTimerRounds}/>}
                     </div>) 
                 }
 
-                {selectedTimer === 'Tabata' && 
+                {selectedTimer === 'Tabata' && (selectedTimer && selectedTimer.selectedTimer === 'Tabata') &&
                     (<div>
                         <h6 style={{
                             marginBottom:0,
                         }}>
                             Description: 
                         </h6>
-                        <DescriptionInput onChange={handleSelectedTimerDescription} />
+                        {editorTimer && <DescriptionInput value={editorTimer.description} onChange={handleSelectedTimerDescription} />}
+                        {!editorTimer && <DescriptionInput onChange={handleSelectedTimerDescription} />}
                         <h5 style={{
                             marginBottom: 2,
                         }}>
@@ -151,9 +169,11 @@ export const Editor = ({ editorTimer }) => {
                             marginBottom:2,
                             }}>Minutes : Seconds
                         </h6>
-                        <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/> 
+                        {editorTimer && <TimerInput value={editorTimer.startMinutes} options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/>}
+                        {editorTimer && <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerMinutes}/>}
                         <span>:</span>
-                        <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>
+                        {editorTimer && <TimerInput value={editorTimer.startSeconds} options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>}
+                        {!editorTimer && <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerSeconds}/>}
                         <div>
                         <h5 style={{
                             marginBottom:2,
@@ -165,9 +185,11 @@ export const Editor = ({ editorTimer }) => {
                                 marginBottom:0,
                                 }}>Minutes : Seconds
                             </h6>
-                            <TimerInput options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerRestMinutes}/> 
+                            {editorTimer && <TimerInput  value={editorTimer.startRestMinutes} options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerRestMinutes}/>} 
+                            {!editorTimer && <TimerInput  options={minutesOptions} timeType="Minutes" onChange={handleSelectedTimerRestMinutes}/>} 
                             <span>:</span>
-                            <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerRestSeconds}/>
+                            {editorTimer && <TimerInput value={editorTimer.startRestSeconds} options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerRestSeconds}/>}
+                            {!editorTimer && <TimerInput options={secondsOptions} timeType="Seconds" onChange={handleSelectedTimerRestSeconds}/>}
                         </div>
 
                         <h5 style={{
@@ -175,7 +197,8 @@ export const Editor = ({ editorTimer }) => {
                             }}>
                             Rounds
                         </h5>
-                        <TimerInput options={roundsOptions} timeType="Rounds" onChange={handleSelectedTimerRounds}/>
+                        {editorTimer && <TimerInput value={editorTimer.rounds} options={roundsOptions} timeType="Rounds" onChange={handleSelectedTimerRounds}/>}
+                        {!editorTimer && <TimerInput options={roundsOptions} timeType="Rounds" onChange={handleSelectedTimerRounds}/>}
                     </div>) 
                 }
 
