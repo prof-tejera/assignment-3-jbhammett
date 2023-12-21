@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import { makeId, CreateHash, CalculateTotalSeconds, CalculateMinutesSeconds } from "../utils/helpers";
 
 export const TimersContext = React.createContext({});
@@ -44,30 +43,7 @@ const TimersProvider = ({ children }) => {
                 let hashTimers = hash.split('-');
                 const timerTypes = ['Stopwatch', 'Countdown', 'XY', 'Tabata'];
 
-            //     for (let i=0; i<=hashTimers.length; i++){
-            //         if (timerTypes.includes(hashTimers[i])){
-            //             console.log(`timers ${timers}`);
-            //             console.log(`Selected Timer ${selectedTimer}`);
-                    
-            //             setTimers([
-            //             ...timers,
-            //             {
-            //                 id: makeId(),
-            //                 index: (timers.length === 0) ? 0 : timers.length,
-            //                 selectedTimer: hashTimers[i],
-            //                 startMinutes: CalculateMinutesSeconds(parseInt(hashTimers[i+1]))[0] ,
-            //                 startSeconds: CalculateMinutesSeconds(parseInt(hashTimers[i+1]))[1],
-            //                 rounds: (hashTimers[i] === 'XY' || hashTimers[i] === 'Tabata') ? hashTimers[i+2] : 0,
-            //                 startRestMinutes: (hashTimers[i] === 'Tabata') ? CalculateMinutesSeconds(parseInt(hashTimers[i+3]))[0] : 0,
-            //                 startRestSeconds: (hashTimers[i] === 'Tabata') ? CalculateMinutesSeconds(parseInt(hashTimers[i+3]))[1] : 0,
-            //                 isRunning: 'not running',
-                            
-                            
-            //             },
-            //         ])   
-            //     }
-            
-            // }
+
             const newTimers = [];
 
         for (let i = 0; i <= hashTimers.length; i++) {
@@ -108,12 +84,24 @@ const TimersProvider = ({ children }) => {
     }, [])
 
 
+
+    useEffect(()=>{
+        if(window.location.pathname === '/') {
+            setHash(()=>{
+                return CreateHash(timers);
+            });
+        }
+
+    }, [timers])
+
+
     return (
         <TimersContext.Provider
             value={{
                 timers,
                 editorOpen: !!editTimer,
                 editTimer,
+                setEditTimer,
                 currentTimer,
                 setCurrentTimer,
                 currentIndex,

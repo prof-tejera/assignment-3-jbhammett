@@ -9,16 +9,16 @@ import TimersView from "../views/TimersView";
 import { TimersContext } from "../utils/TimersProvider";
 
 
-export const Editor = () => {
+export const Editor = ({ editorTimer }) => {
     const { timers, editTimer, saveTimer, closeEditor, secondsOptions, minutesOptions, roundsOptions } = useContext(TimersContext);
     // const [selectedTimer, setSelectedTimer ] = useState(null);
-    const [selectedTimer, setSelectedTimer ] = useState(editTimer?.selectedTimer ?? '');
-    const [startMinutes, setStartMinutes] = useState(editTimer?.startMinutes ?? '');
-    const [startSeconds, setStartSeconds] = useState(editTimer?.startSeconds ?? '');
+    const [selectedTimer, setSelectedTimer ] = useState(editorTimer?.selectedTimer ?? '');
+    const [startMinutes, setStartMinutes] = useState(editorTimer?.startMinutes ?? '');
+    const [startSeconds, setStartSeconds] = useState(editorTimer?.startSeconds ?? '');
     const [rounds, setRounds] = useState(editTimer?.rounds ?? '');
-    const [startRestMinutes, setStartRestMinutes] = useState(editTimer?.restMinutes ?? '');
-    const [startRestSeconds, setStartRestSeconds] = useState(editTimer?.restSeconds ?? '');
-    const [description, setDescription] = useState(editTimer?.description ?? '');
+    const [startRestMinutes, setStartRestMinutes] = useState(editorTimer?.restMinutes ?? '');
+    const [startRestSeconds, setStartRestSeconds] = useState(editorTimer?.restSeconds ?? '');
+    const [description, setDescription] = useState(editorTimer?.description ?? '');
     
     const handleAddTimerInput = (value) => {
         setSelectedTimer(value);
@@ -50,14 +50,15 @@ export const Editor = () => {
 
     let listOptions = '';
     let options = ['Choose One', 'Stopwatch', 'Countdown', 'XY', 'Tabata'];
+
     if (options){
         listOptions = options.map((option,index) => <option key={index} value={option}>{option}</option>);
+        console.log(listOptions);
     }
     else {
         listOptions=<option>none</option>
     }
-
-
+    // console.log(`editorTimer ${editorTimer.selectedTimer}`);
     return (
         <div>
             <select onChange={e => handleAddTimerInput(e.target.value)}>
@@ -65,14 +66,15 @@ export const Editor = () => {
                 {listOptions}
             </select>
          
-            {selectedTimer === 'Stopwatch' && 
+            {(selectedTimer === 'Stopwatch' || (editorTimer && editorTimer.selectedTimer === 'Stopwatch')) &&  
+            //  {selectedTimer === 'Stopwatch' && 
                 (<div>
                     <h6 style={{
                         marginBottom:0,
                     }}>
                         Description: 
                     </h6>
-                    <DescriptionInput onChange={handleSelectedTimerDescription} />
+                    <DescriptionInput value={editTimer.description} onChange={handleSelectedTimerDescription} />
                     <h6 style={{
                         marginBottom:0,
                         }}>Minutes : Seconds
@@ -177,8 +179,7 @@ export const Editor = () => {
                         color="#aaa0ff"
                         onClick={() => {
                             saveTimer({
-                                // id: selectedTimer?.id,
-                                id: editTimer?.id,
+                                id: editorTimer?.id,
                                 index: (timers.length === 0) ? 0 : timers.length,
                                 selectedTimer,
                                 startMinutes,

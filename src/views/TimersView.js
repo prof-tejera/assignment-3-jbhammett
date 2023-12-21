@@ -1,6 +1,5 @@
 import React from "react";
 import { useContext, useState, useEffect } from "react";
-import { Link } from 'react-router-dom';
 import styled from "styled-components";
 
 import Stopwatch from "../components/timers/Stopwatch";
@@ -32,11 +31,8 @@ const Timer = styled.div`
 const TimerTitle = styled.div``;
 
 const TimersView = () => {
-  const { timers, editorOpen, openTimer, openEditor, totalTime, setTotalTime, hash, setHash, saveTimer, deleteTimer, handleTimerStart, handleWorkoutReset, handlePauseResume, handleFastForward} = useContext(TimersContext);
-  // const [ workoutSteps, setWorkoutSteps ] = useState(() => { 
-  //   const hash = (window.location.hash ?? '').slice(1);
-  //   return decodeURIComponent(hash);
-  // });
+  const { timers, editorOpen, editTimer, setEditTimer, openTimer, openEditor, totalTime, setTotalTime, hash, setHash, saveTimer, deleteTimer, handleTimerStart, handleWorkoutReset, handlePauseResume, handleFastForward} = useContext(TimersContext);
+
 
   useEffect (() => {
     if (timers.length > 0){
@@ -91,7 +87,7 @@ const TimersView = () => {
       return total;
     });
   }, [timers])
-
+  console.log(`editTimer from TimersView ${editTimer}`);
   return (
 
     <div>
@@ -103,25 +99,29 @@ const TimersView = () => {
       <DisplayTime minutes={CalculateMinutesSeconds(totalTime)[0]} seconds={CalculateMinutesSeconds(totalTime)[1]} />
 
       <Timers>
+      {/* {editTimer && <Editor editTimer={editTimer} />} */}
+      {editTimer && <Editor editorTimer={editTimer} />}
         {timersDisplay.map((timer) => (
           <div key={timer.index}>
             <Timer >
               {timer.C}
             </Timer>
 
-            {/* <Button value="Edit Timer" color="#aaa0ff" onClick={() => openTimer({ index: timer.index })} />
-                {editorOpen && <Editor />} */}
+            {/* <Button value="Edit Timer" color="#aaa0ff" onClick={() => openTimer({ index: timer.index })} /> */}
+            <Button value="Edit" color="#aaa0ff" onClick={() => setEditTimer(timer)}/>
+            {/* <Button value="Edit Timer" color="#aaa0ff" onClick={() => openEditor({ index: timer.index })} /> */}
+                {/* {editorOpen && <Editor />} */}
+               
 
-            <Button value="Delete Timer" onClick={() => {
+            <Button value="Delete" color="#aaa0ff" onClick={() => {
                     deleteTimer({ id: timer.id });
                   }} />
-            {/* <Link to={`/edit/${timerId}`}>
-                <Button value="Edit" />
-            </Link> */}
                   
           </div>
+          
         ))}
       </Timers>
+      
     </div>
   );
 };
