@@ -99,7 +99,7 @@ const TimersView = () => {
   }, [timers]) // eslint-disable-line
 
   const moveTimerUp = (timer, timers) => {
-    console.log(`timer ${timer}`);
+    console.log(`timer ${timers[timer].selectedTimer}`);
     // let tempTimers = timers.filter((t) => t.id !== timer.id);
     // console.log(tempTimers);
     
@@ -107,8 +107,10 @@ const TimersView = () => {
     
     // console.log(`${timers[timer.index -1].selectedTimer} ${timers[timer.index -1].index}`);
     const newTimers = [];
+    // let newIndex = parseInt(timer.index) - 1;
+    let newIndex = timer - 1;
    
-    const tempTimer = timers[timer.index - 1];
+    const tempTimer = timers[newIndex];
    
     // console.log(`tempTimer ${tempTimer.selectedTimer}`);
     for (let i=0; i<timers.length; i++) {
@@ -118,15 +120,20 @@ const TimersView = () => {
       // }
       
       // newTimers.push(tempTimers[i]);
-      
-    if ((i===timer.index - 1) && ((timer.index - 1) >= 0)){
-      timer.index = timer.index - 1;
-      newTimers.push(timer);
+    
+    
+    console.log(`i ${i}`);
+    console.log(`timer index ${newIndex}`);
+    // if ((i===timer.index - 1) && ((timer.index - 1) >= 0)){
+    if ((i===newIndex) && ((newIndex) >= 0)){
+      console.log('working');
+      timers[timer].index = newIndex;
+      newTimers.push(timers[timer]);
    
       tempTimer.index = timer.index;
       newTimers.push(tempTimer);
     }
-    else if (timers[i] !== timer) {
+    else if (timers[i] !== timers[timer]) {
       newTimers.push(timers[i]);
     }
   }
@@ -165,7 +172,7 @@ const TimersView = () => {
                       deleteTimer({ id: timer.id });
                     }} />
               {/* <Button value="Move Up" color="#aaa0ff" onClick={ moveTimerUp(timer, timers)} /> */}
-              <button onClick={() => { moveTimerUp(timer.C, timers)}}>Move Up</button>
+              <button onClick={() => { moveTimerUp(timer.index, timers)}}>Move Up</button>
                     
             </div>
             
