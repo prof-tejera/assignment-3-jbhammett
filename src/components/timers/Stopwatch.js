@@ -9,7 +9,7 @@ import { TimersContext } from "../../utils/TimersProvider";
 
 
 const Stopwatch = ({id, index, startMinutes, startSeconds, isRunning, description }) =>  {
-    const { currentIndex, setCurrentIndex, running, setRunning, totalTime, setTotalTime } = useContext(TimersContext);
+    const { currentIndex, setCurrentIndex, running, setRunning, totalTime, setTotalTime, storedTimeDifference } = useContext(TimersContext);
     const [counter, setCounter] = useState(0);
     const secondsCountInterval = useRef(0);
     const totalSeconds = useRef(CalculateTotalSeconds(startMinutes, startSeconds));
@@ -26,6 +26,18 @@ const Stopwatch = ({id, index, startMinutes, startSeconds, isRunning, descriptio
     }
 
 
+    useEffect(() => {
+      const storedTime = window.localStorage.getItem(index);
+      if (storedTime) {
+        setCounter(JSON.parse(storedTime));
+        const timeDifference = (CalculateTotalSeconds(startMinutes, startSeconds)) - (JSON.parse(storedTime));
+        setTotalTime(prev => {
+          return prev - timeDifference;
+        });
+      }
+
+
+    }, []);
 
     // Start timer
     useEffect(() => {
@@ -33,12 +45,17 @@ const Stopwatch = ({id, index, startMinutes, startSeconds, isRunning, descriptio
         if (index === currentIndex && running === true) {
             secondsCountInterval.current = setInterval(() => {
             setCounter(prev => {
+              if (prev % 5 === 0){
+                window.localStorage.setItem(index, JSON.stringify(prev));
+              }
               return prev + 1;
             });
 
             setTotalTime(prev => {
               return prev - 1;
             });
+
+            
           }, 1000);
         }
 

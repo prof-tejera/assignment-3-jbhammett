@@ -26,11 +26,26 @@ const Countdown = ({ id, index, startMinutes, startSeconds, isRunning, descripti
         isRunning = 'not running';
     }
 
+    useEffect(() => {
+        const storedTime = window.localStorage.getItem(index);
+        if (storedTime) {
+          setCounter(JSON.parse(storedTime));
+          const timeDifference = (CalculateTotalSeconds(startMinutes, startSeconds)) - (JSON.parse(storedTime));
+          setTotalTime(prev => {
+            return prev - timeDifference;
+          });
+        }
+
+  
+      }, []);
 
     useEffect(() => {
         if (index === currentIndex && running === true) {
             secondsCountInterval.current = setInterval(() => {
             setCounter(prev => {
+                if (prev % 5 === 0){
+                    window.localStorage.setItem(index, JSON.stringify(prev));
+                  }
               return prev - 1;
             });
 

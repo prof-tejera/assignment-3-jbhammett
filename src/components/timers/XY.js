@@ -28,9 +28,31 @@ const XY = ({ id, index, startMinutes, startSeconds, rounds, isRunning, descript
 
 
     useEffect(() => {
+      const storedTime = window.localStorage.getItem(index);
+      const storedRound = window.localStorage.getItem('XYRound');
+
+      if (storedTime) {
+        setCounter(JSON.parse(storedTime));
+        const timeDifference = (CalculateTotalSeconds(startMinutes, startSeconds)) - (JSON.parse(storedTime));
+        setTotalTime(prev => {
+          return prev - timeDifference;
+        });
+      }
+
+      if(storedRound) {
+        setRoundsCounter(JSON.parse(storedRound));
+      }
+
+
+    }, []);
+
+    useEffect(() => {
         if (index === currentIndex && running === true) {
             secondsCountInterval.current = setInterval(() => {
             setCounter(prev => {
+              if (prev % 5 === 0){
+                window.localStorage.setItem(index, JSON.stringify(prev));
+              }
               return prev - 1;
             });
 
@@ -53,6 +75,7 @@ const XY = ({ id, index, startMinutes, startSeconds, rounds, isRunning, descript
       useEffect(() => {
         if (counter === 0 && roundsCounter < rounds){
             setRoundsCounter( prev=> {
+                window.localStorage.setItem('XYRound', JSON.stringify(prev + 1));
                 return prev + 1;
             });
             setCounter(duration);

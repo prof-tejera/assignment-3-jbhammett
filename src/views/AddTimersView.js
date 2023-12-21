@@ -48,8 +48,6 @@ export const Editor = ({ editorTimer }) => {
         setDescription(value);
     }
 
-    document.getElementById('select-timers').value = editorTimer.selectedTimer;
-
     let listOptions = '';
     let options = ['Choose One', 'Stopwatch', 'Countdown', 'XY', 'Tabata'];
 

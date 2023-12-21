@@ -87,7 +87,7 @@ const TimersView = () => {
       return total;
     });
   }, [timers])
-  console.log(`editTimer from TimersView ${editTimer}`);
+
   return (
 
     <div>

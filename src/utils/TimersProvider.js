@@ -44,45 +44,45 @@ const TimersProvider = ({ children }) => {
                 const timerTypes = ['Stopwatch', 'Countdown', 'XY', 'Tabata'];
 
 
-            const newTimers = [];
+                const newTimers = [];
 
-        for (let i = 0; i <= hashTimers.length; i++) {
-          if (timerTypes.includes(hashTimers[i])) {
-            console.log(`timers ${timers}`);
-            console.log(`Selected Timer ${selectedTimer}`);
+                for (let i = 0; i <= hashTimers.length; i++) {
+                if (timerTypes.includes(hashTimers[i])) {
+                    console.log(`timers ${timers}`);
+                    console.log(`Selected Timer ${selectedTimer}`);
 
-            newTimers.push({
-              id: makeId(),
-              index: timers.length === 0 ? 0 : timers.length,
-              selectedTimer: hashTimers[i],
-              startMinutes: CalculateMinutesSeconds(
-                parseInt(hashTimers[i + 1])
-              )[0],
-              startSeconds: CalculateMinutesSeconds(
-                parseInt(hashTimers[i + 1])
-              )[1],
-              rounds:
-                hashTimers[i] === "XY" || hashTimers[i] === "Tabata"
-                  ? hashTimers[i + 2]
-                  : 0,
-              startRestMinutes:
-                hashTimers[i] === "Tabata"
-                  ? CalculateMinutesSeconds(parseInt(hashTimers[i + 3]))[0]
-                  : 0,
-              startRestSeconds:
-                hashTimers[i] === "Tabata"
-                  ? CalculateMinutesSeconds(parseInt(hashTimers[i + 3]))[1]
-                  : 0,
-              isRunning: "not running",
-            });
-          }
+                    newTimers.push({
+                    id: makeId(),
+                    index: timers.length === 0 ? 0 : timers.length,
+                    selectedTimer: hashTimers[i],
+                    startMinutes: CalculateMinutesSeconds(
+                        parseInt(hashTimers[i + 1])
+                    )[0],
+                    startSeconds: CalculateMinutesSeconds(
+                        parseInt(hashTimers[i + 1])
+                    )[1],
+                    rounds:
+                        hashTimers[i] === "XY" || hashTimers[i] === "Tabata"
+                        ? hashTimers[i + 2]
+                        : 0,
+                    startRestMinutes:
+                        hashTimers[i] === "Tabata"
+                        ? CalculateMinutesSeconds(parseInt(hashTimers[i + 3]))[0]
+                        : 0,
+                    startRestSeconds:
+                        hashTimers[i] === "Tabata"
+                        ? CalculateMinutesSeconds(parseInt(hashTimers[i + 3]))[1]
+                        : 0,
+                    isRunning: "not running",
+                    });
+                }
 
-          setTimers(newTimers);
+                setTimers(newTimers);
+                }
+            }
         }
-        }
-    }
+  
     }, [])
-
 
 
     useEffect(()=>{

@@ -32,10 +32,37 @@ const Tabata = ({ id, index, startMinutes, startSeconds, rounds, startRestMinute
 
 
     useEffect(() => {
+        const storedTime = window.localStorage.getItem(index);
+        const storedRestTime = window.localStorage.getItem('rest');
+        const storedRound = window.localStorage.getItem('TabataRound');
+
+        let restTimeDifference = 0;
+        if (storedTime) {
+          setCounter(JSON.parse(storedTime));
+          const workTimeDifference = (JSON.parse(storedTime));
+            if(storedRestTime){
+                restTimeDifference = (JSON.parse(storedRestTime));
+            }
+          const timeDifference = (CalculateTotalSeconds(startMinutes, startSeconds)) - (workTimeDifference + restTimeDifference);  
+          setTotalTime(prev => {
+            return prev - timeDifference;
+          });
+        }
+        if(storedRound){
+            setRoundsCounter(JSON.parse(storedRound));
+        }
+
+  
+      }, []);
+
+    useEffect(() => {
         if (index === currentIndex && running === true) {
             secondsCountInterval.current = setInterval(() => {
                 if(counter > 0){
                     setCounter(prev => {
+                        if (prev % 5 === 0){
+                            window.localStorage.setItem(index, JSON.stringify(prev));
+                          }
                         return prev - 1;
                     });
 
@@ -45,6 +72,9 @@ const Tabata = ({ id, index, startMinutes, startSeconds, rounds, startRestMinute
                 }
                 else if (counter <= 0 && restCounter > 0){
                     setRestCounter(prevRest => {
+                        if (prevRest % 5 === 0){
+                            window.localStorage.setItem('rest', JSON.stringify(prevRest));
+                          }
                         return prevRest - 1;
                     });
 
@@ -68,6 +98,7 @@ const Tabata = ({ id, index, startMinutes, startSeconds, rounds, startRestMinute
       useEffect(() => {
         if (restCounter === 0 && roundsCounter < rounds){
             setRoundsCounter( prev=> {
+                window.localStorage.setItem('TabataRound', JSON.stringify(prev + 1));
                 return prev + 1;
             });
             setCounter(workDuration);
