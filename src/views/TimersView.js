@@ -1,5 +1,5 @@
 import React from "react";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { ErrorBoundary } from 'react-error-boundary';
 import styled from "styled-components";
 
@@ -29,7 +29,6 @@ const Timer = styled.div`
   font-size: 1.5rem;
 `;
 
-const TimerTitle = styled.div``;
 
 function MyFallbackComponent({ error, resetErrorBoundary }) {
   return (
@@ -42,7 +41,7 @@ function MyFallbackComponent({ error, resetErrorBoundary }) {
 }
 
 const TimersView = () => {
-  const { timers, editorOpen, editTimer, setEditTimer, openTimer, openEditor, totalTime, setTotalTime, hash, setHash, saveTimer, deleteTimer, handleTimerStart, handleWorkoutReset, handlePauseResume, handleFastForward} = useContext(TimersContext);
+  const { timers, editTimer, setEditTimer, totalTime, setTotalTime, hash, setHash, deleteTimer, handleTimerStart, handleWorkoutReset, handlePauseResume, handleFastForward, setTimers} = useContext(TimersContext);
 
 
   useEffect (() => {
@@ -100,8 +99,45 @@ const TimersView = () => {
   }, [timers])
 
   const moveTimerUp = (timer, timers) => {
-    timer.index = timer.index - 1;
-    timers[timer.index - 1] = timers[timer.index + 1];
+    console.log(`timer ${timer}`);
+    // let tempTimers = timers.filter((t) => t.id !== timer.id);
+    // console.log(tempTimers);
+    
+    // console.log(`${timer.selectedTimer} ${timer.index}`);
+    
+    // console.log(`${timers[timer.index -1].selectedTimer} ${timers[timer.index -1].index}`);
+    const newTimers = [];
+   
+    const tempTimer = timers[timer.index - 1];
+   
+    // console.log(`tempTimer ${tempTimer.selectedTimer}`);
+    for (let i=0; i<timers.length; i++) {
+      // if(i === timer.index - 1){
+      //   console.log('push');
+      //   newTimers.push(timer);
+      // }
+      
+      // newTimers.push(tempTimers[i]);
+      
+    if ((i===timer.index - 1) && ((timer.index - 1) >= 0)){
+      timer.index = timer.index - 1;
+      newTimers.push(timer);
+   
+      tempTimer.index = timer.index;
+      newTimers.push(tempTimer);
+    }
+    else if (timers[i] !== timer) {
+      newTimers.push(timers[i]);
+    }
+  }
+
+
+    setTimers(newTimers);
+    
+    setHash(()=>{
+      return CreateHash(timers);
+  });
+  console.log(`timers ${timers}`);
   }
 
   return (
@@ -128,7 +164,8 @@ const TimersView = () => {
               <Button value="Delete" color="#aaa0ff" onClick={() => {
                       deleteTimer({ id: timer.id });
                     }} />
-              <Button value="Move Up" color="#aaa0ff" onClick={ moveTimerUp(timer, timers)} />
+              {/* <Button value="Move Up" color="#aaa0ff" onClick={ moveTimerUp(timer, timers)} /> */}
+              <button onClick={() => { moveTimerUp(timer.C, timers)}}>Move Up</button>
                     
             </div>
             

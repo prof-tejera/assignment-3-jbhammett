@@ -11,7 +11,7 @@ import { TimersContext } from "../../utils/TimersProvider";
 
 const Tabata = ({ id, index, startMinutes, startSeconds, rounds, startRestMinutes, startRestSeconds, isRunning, description }) => {
     
-    const { currentIndex, setCurrentIndex, running, setRunning, setTotalTime } = useContext(TimersContext);
+    const { currentIndex, setCurrentIndex, running, setTotalTime } = useContext(TimersContext);
 
     const workDuration = CalculateTotalSeconds(startMinutes, startSeconds);
     const restDuration = CalculateTotalSeconds(startRestMinutes, startRestSeconds);

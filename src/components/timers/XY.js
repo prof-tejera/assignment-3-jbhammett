@@ -9,7 +9,7 @@ import { CalculateMinutesSeconds, CalculateTotalSeconds } from "../../utils/help
 import { TimersContext } from "../../utils/TimersProvider";
 
 const XY = ({ id, index, startMinutes, startSeconds, rounds, isRunning, description }) => {
-    const { currentIndex, setCurrentIndex, running, setRunning, setTotalTime } = useContext(TimersContext);
+    const { currentIndex, setCurrentIndex, running, setTotalTime } = useContext(TimersContext);
 
     const duration = CalculateTotalSeconds(startMinutes, startSeconds);
     const [counter, setCounter] = useState(duration);

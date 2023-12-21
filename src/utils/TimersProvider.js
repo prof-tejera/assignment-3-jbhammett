@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { makeId, CreateHash, CalculateTotalSeconds, CalculateMinutesSeconds } from "../utils/helpers";
+import { makeId, CreateHash, CalculateMinutesSeconds } from "../utils/helpers";
 
 export const TimersContext = React.createContext({});
 
@@ -48,8 +48,6 @@ const TimersProvider = ({ children }) => {
 
                 for (let i = 0; i <= hashTimers.length; i++) {
                 if (timerTypes.includes(hashTimers[i])) {
-                    console.log(`timers ${timers}`);
-                    console.log(`Selected Timer ${selectedTimer}`);
 
                     newTimers.push({
                     id: makeId(),
@@ -99,6 +97,7 @@ const TimersProvider = ({ children }) => {
         <TimersContext.Provider
             value={{
                 timers,
+                setTimers,
                 editorOpen: !!editTimer,
                 editTimer,
                 setEditTimer,

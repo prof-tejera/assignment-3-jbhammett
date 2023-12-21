@@ -10,7 +10,7 @@ import { CalculateMinutesSeconds, CalculateTotalSeconds } from "../../utils/help
 
 
 const Countdown = ({ id, index, startMinutes, startSeconds, isRunning, description})=> {
-    const { currentIndex, setCurrentIndex, running, setRunning, setTotalTime } = useContext(TimersContext);
+    const { currentIndex, setCurrentIndex, running, setTotalTime } = useContext(TimersContext);
     
     const duration = CalculateTotalSeconds(startMinutes, startSeconds);
     const [counter, setCounter] = useState(duration);
