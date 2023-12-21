@@ -1,6 +1,7 @@
 import React from "react";
-import { useContext, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+import { useContext, useState } from "react";
+
 
 import Button from "../components/generic/Button";
 import TimerInput from "../components/generic/TimerInput";
@@ -53,7 +54,6 @@ export const Editor = ({ editorTimer }) => {
 
     if (options){
         listOptions = options.map((option,index) => <option key={index} value={option}>{option}</option>);
-        console.log(listOptions);
     }
     else {
         listOptions=<option>none</option>

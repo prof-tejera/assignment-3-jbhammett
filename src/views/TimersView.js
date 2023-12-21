@@ -99,6 +99,11 @@ const TimersView = () => {
     });
   }, [timers])
 
+  const moveTimerUp = (timer, timers) => {
+    timer.index = timer.index - 1;
+    timers[timer.index - 1] = timers[timer.index + 1];
+  }
+
   return (
     <ErrorBoundary fallback={<div>Something Failed</div>} FallbackComponent={MyFallbackComponent}>
 
@@ -111,7 +116,6 @@ const TimersView = () => {
         <DisplayTime minutes={CalculateMinutesSeconds(totalTime)[0]} seconds={CalculateMinutesSeconds(totalTime)[1]} />
 
         <Timers>
-        {/* {editTimer && <Editor editTimer={editTimer} />} */}
         {editTimer && <Editor editorTimer={editTimer} />}
           {timersDisplay.map((timer) => (
             <div key={timer.index}>
@@ -119,15 +123,12 @@ const TimersView = () => {
                 {timer.C}
               </Timer>
 
-              {/* <Button value="Edit Timer" color="#aaa0ff" onClick={() => openTimer({ index: timer.index })} /> */}
               <Button value="Edit" color="#aaa0ff" onClick={() => setEditTimer(timer)}/>
-              {/* <Button value="Edit Timer" color="#aaa0ff" onClick={() => openEditor({ index: timer.index })} /> */}
-                  {/* {editorOpen && <Editor />} */}
-                
 
               <Button value="Delete" color="#aaa0ff" onClick={() => {
                       deleteTimer({ id: timer.id });
                     }} />
+              <Button value="Move Up" color="#aaa0ff" onClick={ moveTimerUp(timer, timers)} />
                     
             </div>
             
